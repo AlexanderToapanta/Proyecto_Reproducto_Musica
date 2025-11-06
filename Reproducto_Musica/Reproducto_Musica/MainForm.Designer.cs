@@ -45,19 +45,21 @@
             // btn_CargarMusica
             // 
             this.btn_CargarMusica.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_CargarMusica.Location = new System.Drawing.Point(27, 107);
+            this.btn_CargarMusica.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_CargarMusica.Location = new System.Drawing.Point(27, 109);
             this.btn_CargarMusica.Name = "btn_CargarMusica";
-            this.btn_CargarMusica.Size = new System.Drawing.Size(43, 23);
+            this.btn_CargarMusica.Size = new System.Drawing.Size(46, 27);
             this.btn_CargarMusica.TabIndex = 0;
-            this.btn_CargarMusica.Text = "button1";
+            this.btn_CargarMusica.Text = "📤";
             this.btn_CargarMusica.UseVisualStyleBackColor = true;
             this.btn_CargarMusica.Click += new System.EventHandler(this.btn_CargarMusica_Click);
             // 
             // btn_Play
             // 
-            this.btn_Play.Location = new System.Drawing.Point(444, 386);
+            this.btn_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Play.Location = new System.Drawing.Point(422, 386);
             this.btn_Play.Name = "btn_Play";
-            this.btn_Play.Size = new System.Drawing.Size(75, 23);
+            this.btn_Play.Size = new System.Drawing.Size(75, 29);
             this.btn_Play.TabIndex = 1;
             this.btn_Play.Text = "▶️ ";
             this.btn_Play.UseVisualStyleBackColor = true;
@@ -65,30 +67,34 @@
             // 
             // btn_Parar
             // 
-            this.btn_Parar.Location = new System.Drawing.Point(328, 386);
+            this.btn_Parar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Parar.Location = new System.Drawing.Point(329, 386);
             this.btn_Parar.Name = "btn_Parar";
-            this.btn_Parar.Size = new System.Drawing.Size(75, 23);
+            this.btn_Parar.Size = new System.Drawing.Size(75, 29);
             this.btn_Parar.TabIndex = 2;
+            this.btn_Parar.Text = "⏹️";
             this.btn_Parar.UseVisualStyleBackColor = true;
             this.btn_Parar.Click += new System.EventHandler(this.btn_Parar_Click);
             // 
             // btn_Anterior
             // 
-            this.btn_Anterior.Location = new System.Drawing.Point(222, 386);
+            this.btn_Anterior.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Anterior.Location = new System.Drawing.Point(220, 386);
             this.btn_Anterior.Name = "btn_Anterior";
-            this.btn_Anterior.Size = new System.Drawing.Size(75, 23);
+            this.btn_Anterior.Size = new System.Drawing.Size(75, 29);
             this.btn_Anterior.TabIndex = 3;
-            this.btn_Anterior.Text = "button1";
+            this.btn_Anterior.Text = "⏮️";
             this.btn_Anterior.UseVisualStyleBackColor = true;
             this.btn_Anterior.Click += new System.EventHandler(this.btn_Anterior_Click);
             // 
             // btn_Siguiente
             // 
-            this.btn_Siguiente.Location = new System.Drawing.Point(551, 386);
+            this.btn_Siguiente.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Siguiente.Location = new System.Drawing.Point(541, 386);
             this.btn_Siguiente.Name = "btn_Siguiente";
-            this.btn_Siguiente.Size = new System.Drawing.Size(75, 23);
+            this.btn_Siguiente.Size = new System.Drawing.Size(75, 29);
             this.btn_Siguiente.TabIndex = 4;
-            this.btn_Siguiente.Text = "button1";
+            this.btn_Siguiente.Text = "⏭️";
             this.btn_Siguiente.UseVisualStyleBackColor = true;
             this.btn_Siguiente.Click += new System.EventHandler(this.btn_Siguiente_Click);
             // 
@@ -110,7 +116,6 @@
             this.lbl_Tiempo.Size = new System.Drawing.Size(42, 13);
             this.lbl_Tiempo.TabIndex = 7;
             this.lbl_Tiempo.Text = "Tiempo";
-            this.lbl_Tiempo.Click += new System.EventHandler(this.lbl_Tiempo_Click);
             // 
             // lbl_Nom_Cancion
             // 
@@ -120,7 +125,6 @@
             this.lbl_Nom_Cancion.Size = new System.Drawing.Size(44, 13);
             this.lbl_Nom_Cancion.TabIndex = 8;
             this.lbl_Nom_Cancion.Text = "Nombre";
-            this.lbl_Nom_Cancion.Click += new System.EventHandler(this.lbl_Nom_Cancion_Click);
             // 
             // txt_texto
             // 

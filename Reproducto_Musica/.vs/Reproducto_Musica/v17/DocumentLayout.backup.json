@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\Usuario\\Documents\\ReproductorMusica\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\usuario\\documents\\reproductormusica\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\Usuario\\Documents\\ReproductorMusica\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\Usuario\\Documents\\ReproductorMusica\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\usuario\\documents\\reproductormusica\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -38,8 +38,7 @@
               "RelativeToolTip": "Reproducto_Musica\\AudioPlayer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAwEMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T20:34:35.584Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T20:34:35.584Z"
             },
             {
               "$type": "Document",
@@ -49,7 +48,7 @@
               "RelativeDocumentMoniker": "Reproducto_Musica\\MainForm.cs",
               "ToolTip": "C:\\Users\\Usuario\\Documents\\ReproductorMusica\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs",
               "RelativeToolTip": "Reproducto_Musica\\MainForm.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAiwD4AAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAYwG8AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-06T20:44:39.445Z",
               "EditorCaption": ""
@@ -76,8 +75,7 @@
               "RelativeToolTip": "Reproducto_Musica\\PlaylistManager.cs",
               "ViewState": "AgIAACQAAAAAAAAAAAAmwC4AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T20:15:19.805Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T20:15:19.805Z"
             }
           ]
         }

@@ -93,12 +93,27 @@ namespace Reproducto_Musica
 
         private void btn_Anterior_Click(object sender, EventArgs e)
         {
+            string prev = playlistManager.PreviousSong();
+            if (prev != null)
+            {
 
+                lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
+                lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
+
+                audioPlayer.Play(prev);
+                lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(prev);
+                btn_Play.Text = "⏸️ Pausar";
+                isPlaying = true;
+            }
         }
 
         private void btn_Parar_Click(object sender, EventArgs e)
         {
-
+            audioPlayer.Stop();
+            isPlaying = false;
+            btn_Play.Text = "▶️";
+            lbl_Tiempo.Text = "00:00 / 00:00";
+            hscrb_Progreso.Value = 0;
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
@@ -140,17 +155,17 @@ namespace Reproducto_Musica
 
         private void btn_Siguiente_Click(object sender, EventArgs e)
         {
+            string next = playlistManager.NextSong();
+            if (next != null)
+            {
+                lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
+                lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
 
-        }
-
-        private void lbl_Tiempo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbl_Nom_Cancion_Click(object sender, EventArgs e)
-        {
-
+                audioPlayer.Play(next);
+                lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(next);
+                btn_Play.Text = "⏸️ Pausar";
+                isPlaying = true;
+            }
         }
 
         private void lstw_Canciones_SelectedIndexChanged(object sender, EventArgs e)
