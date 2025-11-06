@@ -39,19 +39,33 @@ namespace Reproducto_Musica
 
         public void Stop()
         {
-            if (waveOut != null)
+            try
             {
-                waveOut.Stop();
-                waveOut.Dispose();
-                waveOut = null;
-            }
+                if (waveOut != null)
+                {
 
-            if (audioFileReader != null)
+                    waveOut.Stop();
+
+
+                    waveOut.PlaybackStopped -= (s, e) => OnPlaybackStopped?.Invoke(this, EventArgs.Empty);
+
+                    waveOut.Dispose();
+                    waveOut = null;
+                }
+
+                if (audioFileReader != null)
+                {
+                    audioFileReader.Dispose();
+                    audioFileReader = null;
+                }
+            }
+            catch (Exception ex)
             {
-                audioFileReader.Dispose();
-                audioFileReader = null;
+
+                Console.WriteLine("Error al detener el audio: " + ex.Message);
             }
         }
+
         public double GetCurrentTime()
         {
             return audioFileReader != null ? audioFileReader.CurrentTime.TotalSeconds : 0;

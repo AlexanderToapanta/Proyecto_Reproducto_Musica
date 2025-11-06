@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-    
+using TagLib;
+using System.Drawing;
+using System.IO;
+
+
 namespace Reproducto_Musica
 {
     internal class PlaylistManager
@@ -17,6 +21,27 @@ namespace Reproducto_Musica
             if (CurrentIndex == -1)
                 CurrentIndex = 0;
         }
+        public Image GetCoverImage(string filePath)
+        {
+            try
+            {
+                var file = TagLib.File.Create(filePath);
+                if (file.Tag.Pictures != null && file.Tag.Pictures.Length > 0)
+                {
+                    var bin = (byte[])(file.Tag.Pictures[0].Data.Data);
+                    using (var ms = new MemoryStream(bin))
+                    {
+                        return Image.FromStream(ms);
+                    }
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public void SetCurrentIndex(int index)
         {
             if (index >= 0 && index < playlist.Count)

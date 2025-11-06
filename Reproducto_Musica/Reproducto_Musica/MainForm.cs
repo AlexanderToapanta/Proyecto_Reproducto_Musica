@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,24 +73,54 @@ namespace Reproducto_Musica
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
+
+                    if (lstw_Canciones.LargeImageList == null)
+                    {
+                        lstw_Canciones.LargeImageList = new ImageList();
+                        lstw_Canciones.LargeImageList.ImageSize = new Size(64, 64);
+                    }
+
+
+                    lstw_Canciones.Items.Clear();
+                    lstw_Canciones.LargeImageList.Images.Clear();
+
                     foreach (var file in ofd.FileNames)
                     {
                         playlistManager.AddSong(file);
-                        var item = new ListViewItem(System.IO.Path.GetFileName(file));
+
+
+                        Image cover = playlistManager.GetCoverImage(file);
+
+
+                        if (cover == null)
+                        {
+                            string defaultCoverPath = Path.Combine(Application.StartupPath, "Resources", "cover.png");
+                            if (File.Exists(defaultCoverPath))
+                                cover = Image.FromFile(defaultCoverPath);
+                            else
+                                cover = new Bitmap(64, 64);
+                        }
+
+
+                        lstw_Canciones.LargeImageList.Images.Add(cover);
+
+
+                        var item = new ListViewItem(Path.GetFileName(file), lstw_Canciones.LargeImageList.Images.Count - 1);
                         item.Tag = file;
                         lstw_Canciones.Items.Add(item);
                     }
 
+
                     if (lstw_Canciones.Items.Count > 0)
                     {
-
                         lstw_Canciones.Items[0].Selected = true;
                         lstw_Canciones.Items[0].Focused = true;
                         playlistManager.SetCurrentIndex(0);
                     }
                 }
             }
-        }
+        
+            }
 
         private void btn_Anterior_Click(object sender, EventArgs e)
         {
@@ -170,7 +201,20 @@ namespace Reproducto_Musica
 
         private void lstw_Canciones_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lstw_Canciones.SelectedItems.Count > 0)
+            {
+                int index = lstw_Canciones.SelectedItems[0].Index;
+                playlistManager.SetCurrentIndex(index);
 
+                string selectedSong = playlistManager.GetCurrentSong();
+                if (selectedSong != null)
+                {
+                    audioPlayer.Play(selectedSong);
+                    lbl_Nom_Cancion.Text = Path.GetFileName(selectedSong);
+                    btn_Play.Text = "⏸️ Pausar";
+                    isPlaying = true;
+                }
+            }
         }
 
      

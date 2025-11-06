@@ -30,3 +30,4 @@ C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproduc
 C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproduc.79BF5C44.Up2Date
 C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.exe
 C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.pdb
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\bin\Debug\TagLibSharp.dll
