@@ -35,11 +35,11 @@
             this.btn_Anterior = new System.Windows.Forms.Button();
             this.btn_Siguiente = new System.Windows.Forms.Button();
             this.lstw_Canciones = new System.Windows.Forms.ListView();
-            this.prb_Progreso = new System.Windows.Forms.ProgressBar();
             this.lbl_Tiempo = new System.Windows.Forms.Label();
             this.lbl_Nom_Cancion = new System.Windows.Forms.Label();
             this.txt_texto = new System.Windows.Forms.TextBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.tm_Tiempo_Musica = new System.Windows.Forms.Timer(this.components);
+            this.hscrb_Progreso = new System.Windows.Forms.HScrollBar();
             this.SuspendLayout();
             // 
             // btn_CargarMusica
@@ -55,27 +55,26 @@
             // 
             // btn_Play
             // 
-            this.btn_Play.Location = new System.Drawing.Point(390, 386);
+            this.btn_Play.Location = new System.Drawing.Point(444, 386);
             this.btn_Play.Name = "btn_Play";
             this.btn_Play.Size = new System.Drawing.Size(75, 23);
             this.btn_Play.TabIndex = 1;
-            this.btn_Play.Text = "button1";
+            this.btn_Play.Text = "▶️ ";
             this.btn_Play.UseVisualStyleBackColor = true;
             this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
             // 
             // btn_Parar
             // 
-            this.btn_Parar.Location = new System.Drawing.Point(284, 386);
+            this.btn_Parar.Location = new System.Drawing.Point(328, 386);
             this.btn_Parar.Name = "btn_Parar";
             this.btn_Parar.Size = new System.Drawing.Size(75, 23);
             this.btn_Parar.TabIndex = 2;
-            this.btn_Parar.Text = "button1";
             this.btn_Parar.UseVisualStyleBackColor = true;
             this.btn_Parar.Click += new System.EventHandler(this.btn_Parar_Click);
             // 
             // btn_Anterior
             // 
-            this.btn_Anterior.Location = new System.Drawing.Point(192, 386);
+            this.btn_Anterior.Location = new System.Drawing.Point(222, 386);
             this.btn_Anterior.Name = "btn_Anterior";
             this.btn_Anterior.Size = new System.Drawing.Size(75, 23);
             this.btn_Anterior.TabIndex = 3;
@@ -85,7 +84,7 @@
             // 
             // btn_Siguiente
             // 
-            this.btn_Siguiente.Location = new System.Drawing.Point(508, 386);
+            this.btn_Siguiente.Location = new System.Drawing.Point(551, 386);
             this.btn_Siguiente.Name = "btn_Siguiente";
             this.btn_Siguiente.Size = new System.Drawing.Size(75, 23);
             this.btn_Siguiente.TabIndex = 4;
@@ -102,14 +101,6 @@
             this.lstw_Canciones.TabIndex = 5;
             this.lstw_Canciones.UseCompatibleStateImageBehavior = false;
             this.lstw_Canciones.SelectedIndexChanged += new System.EventHandler(this.lstw_Canciones_SelectedIndexChanged);
-            // 
-            // prb_Progreso
-            // 
-            this.prb_Progreso.Location = new System.Drawing.Point(114, 352);
-            this.prb_Progreso.Name = "prb_Progreso";
-            this.prb_Progreso.Size = new System.Drawing.Size(617, 23);
-            this.prb_Progreso.TabIndex = 6;
-            this.prb_Progreso.Click += new System.EventHandler(this.prb_Progreso_Click);
             // 
             // lbl_Tiempo
             // 
@@ -145,19 +136,27 @@
             this.txt_texto.Text = "Presione el boton para agregar musicas";
             this.txt_texto.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // timer1
+            // tm_Tiempo_Musica
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.tm_Tiempo_Musica.Tick += new System.EventHandler(this.tm_Tiempo_Musica_Tick);
+            // 
+            // hscrb_Progreso
+            // 
+            this.hscrb_Progreso.Location = new System.Drawing.Point(115, 353);
+            this.hscrb_Progreso.Name = "hscrb_Progreso";
+            this.hscrb_Progreso.Size = new System.Drawing.Size(616, 16);
+            this.hscrb_Progreso.TabIndex = 10;
+            this.hscrb_Progreso.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrb_Progreso_Scroll);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.hscrb_Progreso);
             this.Controls.Add(this.txt_texto);
             this.Controls.Add(this.lbl_Nom_Cancion);
             this.Controls.Add(this.lbl_Tiempo);
-            this.Controls.Add(this.prb_Progreso);
             this.Controls.Add(this.lstw_Canciones);
             this.Controls.Add(this.btn_Siguiente);
             this.Controls.Add(this.btn_Anterior);
@@ -165,7 +164,7 @@
             this.Controls.Add(this.btn_Play);
             this.Controls.Add(this.btn_CargarMusica);
             this.Name = "MainForm";
-            this.Text = "Reprodcutor de musica";
+            this.Text = "Reproductor de música";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -180,11 +179,11 @@
         private System.Windows.Forms.Button btn_Anterior;
         private System.Windows.Forms.Button btn_Siguiente;
         private System.Windows.Forms.ListView lstw_Canciones;
-        private System.Windows.Forms.ProgressBar prb_Progreso;
         private System.Windows.Forms.Label lbl_Tiempo;
         private System.Windows.Forms.Label lbl_Nom_Cancion;
         private System.Windows.Forms.TextBox txt_texto;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer tm_Tiempo_Musica;
+        private System.Windows.Forms.HScrollBar hscrb_Progreso;
     }
 }
 
