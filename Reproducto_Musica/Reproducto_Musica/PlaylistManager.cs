@@ -9,37 +9,42 @@ namespace Reproducto_Musica
     internal class PlaylistManager
     {
         private List<string> playlist = new List<string>();
-        private int currentIndex = -1;
+        public int CurrentIndex { get; private set; } = -1;
 
         public void AddSong(string filePath)
         {
             playlist.Add(filePath);
-            if (currentIndex == -1)
-                currentIndex = 0;
+            if (CurrentIndex == -1)
+                CurrentIndex = 0;
+        }
+        public void SetCurrentIndex(int index)
+        {
+            if (index >= 0 && index < playlist.Count)
+                CurrentIndex = index;
         }
 
         public string GetCurrentSong()
         {
-            if (currentIndex >= 0 && currentIndex < playlist.Count)
-                return playlist[currentIndex];
+            if (CurrentIndex >= 0 && CurrentIndex < playlist.Count)
+                return playlist[CurrentIndex];
             return null;
         }
 
         public string NextSong()
         {
             if (playlist.Count == 0) return null;
-            currentIndex = (currentIndex + 1) % playlist.Count;
-            return playlist[currentIndex];
+            CurrentIndex = (CurrentIndex + 1) % playlist.Count;
+            return playlist[CurrentIndex];
         }
 
         public string PreviousSong()
         {
             if (playlist.Count == 0) return null;
-            currentIndex = (currentIndex - 1 + playlist.Count) % playlist.Count;
-            return playlist[currentIndex];
+            CurrentIndex = (CurrentIndex - 1 + playlist.Count) % playlist.Count;
+            return playlist[CurrentIndex];
         }
 
         public List<string> GetPlaylist() => playlist;
-    
-}
+
+    }
 }

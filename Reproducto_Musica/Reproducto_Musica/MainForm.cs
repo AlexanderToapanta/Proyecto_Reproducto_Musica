@@ -17,12 +17,37 @@ namespace Reproducto_Musica
         private bool isPlaying = false;
         public MainForm()
         {
+            audioPlayer = new AudioPlayer();
+            playlistManager = new PlaylistManager();
             InitializeComponent();
         }
 
         private void btn_CargarMusica_Click(object sender, EventArgs e)
         {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Archivos de audio|*.mp3;*.wav";
+                ofd.Multiselect = true;
 
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    foreach (var file in ofd.FileNames)
+                    {
+                        playlistManager.AddSong(file);
+                        var item = new ListViewItem(System.IO.Path.GetFileName(file));
+                        item.Tag = file;
+                        lstw_Canciones.Items.Add(item);
+                    }
+
+                    if (lstw_Canciones.Items.Count > 0)
+                    {
+
+                        lstw_Canciones.Items[0].Selected = true;
+                        lstw_Canciones.Items[0].Focused = true;
+                        playlistManager.SetCurrentIndex(0);
+                    }
+                }
+            }
         }
 
         private void btn_Anterior_Click(object sender, EventArgs e)
