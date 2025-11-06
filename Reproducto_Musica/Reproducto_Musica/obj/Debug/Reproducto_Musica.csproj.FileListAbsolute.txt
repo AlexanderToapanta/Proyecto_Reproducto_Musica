@@ -1,0 +1,11 @@
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\bin\Debug\Reproducto_Musica.exe.config
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\bin\Debug\Reproducto_Musica.exe
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\bin\Debug\Reproducto_Musica.pdb
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.MainForm.resources
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.Properties.Resources.resources
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.csproj.GenerateResource.cache
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.exe
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.pdb
+C:\Users\Usuario\Documents\ReproductorMusica\Proyecto_Reproducto_Musica\Reproducto_Musica\Reproducto_Musica\obj\Debug\Reproducto_Musica.exe.config
