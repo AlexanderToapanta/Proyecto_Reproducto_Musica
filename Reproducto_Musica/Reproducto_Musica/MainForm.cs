@@ -12,6 +12,8 @@ namespace Reproducto_Musica
 {
     public partial class MainForm : Form
     {
+
+        private Timer tmr_Reproductor;
         private AudioPlayer audioPlayer;
         private PlaylistManager playlistManager;
         private bool isPlaying = false;
@@ -20,10 +22,24 @@ namespace Reproducto_Musica
             audioPlayer = new AudioPlayer();
             playlistManager = new PlaylistManager();
             InitializeComponent();
+            
+            
+
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            timer1.Interval = 500;
+            timer1.Tick += timer1_Tick;
+            timer1.Start();
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+        }
         private void btn_CargarMusica_Click(object sender, EventArgs e)
         {
+
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Archivos de audio|*.mp3;*.wav";
@@ -62,7 +78,39 @@ namespace Reproducto_Musica
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
+            if (lstw_Canciones.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Selecciona una canción.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            string currentSong = playlistManager.GetCurrentSong();
 
+            int selectedIndex = -1;
+            if (lstw_Canciones.SelectedIndices.Count > 0)
+                selectedIndex = lstw_Canciones.SelectedIndices[0];
+            if (currentSong == null && selectedIndex >= 0)
+            {
+                currentSong = playlistManager.GetPlaylist()[selectedIndex];
+                playlistManager.SetCurrentIndex(selectedIndex);
+            }
+            if (currentSong == null)
+            {
+                MessageBox.Show("No hay ninguna canción seleccionada.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if (!isPlaying)
+            {
+                audioPlayer.Play(currentSong);
+                lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(currentSong);
+                btn_Play.Text = "⏸️ Pausar";
+                isPlaying = true;
+            }
+            else
+            {
+                audioPlayer.Pause();
+                btn_Play.Text = "▶️ Reanudar";
+                isPlaying = false;
+            }
         }
 
         private void btn_Siguiente_Click(object sender, EventArgs e)
@@ -89,5 +137,7 @@ namespace Reproducto_Musica
         {
 
         }
+
+       
     }
 }

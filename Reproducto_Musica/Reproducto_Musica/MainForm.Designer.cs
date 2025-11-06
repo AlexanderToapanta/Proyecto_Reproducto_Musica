@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btn_CargarMusica = new System.Windows.Forms.Button();
             this.btn_Play = new System.Windows.Forms.Button();
             this.btn_Parar = new System.Windows.Forms.Button();
@@ -38,6 +39,7 @@
             this.lbl_Tiempo = new System.Windows.Forms.Label();
             this.lbl_Nom_Cancion = new System.Windows.Forms.Label();
             this.txt_texto = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // btn_CargarMusica
@@ -53,7 +55,7 @@
             // 
             // btn_Play
             // 
-            this.btn_Play.Location = new System.Drawing.Point(386, 381);
+            this.btn_Play.Location = new System.Drawing.Point(390, 386);
             this.btn_Play.Name = "btn_Play";
             this.btn_Play.Size = new System.Drawing.Size(75, 23);
             this.btn_Play.TabIndex = 1;
@@ -63,7 +65,7 @@
             // 
             // btn_Parar
             // 
-            this.btn_Parar.Location = new System.Drawing.Point(286, 381);
+            this.btn_Parar.Location = new System.Drawing.Point(284, 386);
             this.btn_Parar.Name = "btn_Parar";
             this.btn_Parar.Size = new System.Drawing.Size(75, 23);
             this.btn_Parar.TabIndex = 2;
@@ -73,7 +75,7 @@
             // 
             // btn_Anterior
             // 
-            this.btn_Anterior.Location = new System.Drawing.Point(192, 381);
+            this.btn_Anterior.Location = new System.Drawing.Point(192, 386);
             this.btn_Anterior.Name = "btn_Anterior";
             this.btn_Anterior.Size = new System.Drawing.Size(75, 23);
             this.btn_Anterior.TabIndex = 3;
@@ -83,7 +85,7 @@
             // 
             // btn_Siguiente
             // 
-            this.btn_Siguiente.Location = new System.Drawing.Point(586, 381);
+            this.btn_Siguiente.Location = new System.Drawing.Point(508, 386);
             this.btn_Siguiente.Name = "btn_Siguiente";
             this.btn_Siguiente.Size = new System.Drawing.Size(75, 23);
             this.btn_Siguiente.TabIndex = 4;
@@ -112,21 +114,21 @@
             // lbl_Tiempo
             // 
             this.lbl_Tiempo.AutoSize = true;
-            this.lbl_Tiempo.Location = new System.Drawing.Point(123, 386);
+            this.lbl_Tiempo.Location = new System.Drawing.Point(129, 391);
             this.lbl_Tiempo.Name = "lbl_Tiempo";
-            this.lbl_Tiempo.Size = new System.Drawing.Size(35, 13);
+            this.lbl_Tiempo.Size = new System.Drawing.Size(42, 13);
             this.lbl_Tiempo.TabIndex = 7;
-            this.lbl_Tiempo.Text = "label1";
+            this.lbl_Tiempo.Text = "Tiempo";
             this.lbl_Tiempo.Click += new System.EventHandler(this.lbl_Tiempo_Click);
             // 
             // lbl_Nom_Cancion
             // 
             this.lbl_Nom_Cancion.AutoSize = true;
-            this.lbl_Nom_Cancion.Location = new System.Drawing.Point(72, 391);
+            this.lbl_Nom_Cancion.Location = new System.Drawing.Point(52, 391);
             this.lbl_Nom_Cancion.Name = "lbl_Nom_Cancion";
-            this.lbl_Nom_Cancion.Size = new System.Drawing.Size(35, 13);
+            this.lbl_Nom_Cancion.Size = new System.Drawing.Size(44, 13);
             this.lbl_Nom_Cancion.TabIndex = 8;
-            this.lbl_Nom_Cancion.Text = "label1";
+            this.lbl_Nom_Cancion.Text = "Nombre";
             this.lbl_Nom_Cancion.Click += new System.EventHandler(this.lbl_Nom_Cancion_Click);
             // 
             // txt_texto
@@ -142,6 +144,10 @@
             this.txt_texto.TabIndex = 9;
             this.txt_texto.Text = "Presione el boton para agregar musicas";
             this.txt_texto.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
@@ -160,6 +166,7 @@
             this.Controls.Add(this.btn_CargarMusica);
             this.Name = "MainForm";
             this.Text = "Reprodcutor de musica";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,6 +184,7 @@
         private System.Windows.Forms.Label lbl_Tiempo;
         private System.Windows.Forms.Label lbl_Nom_Cancion;
         private System.Windows.Forms.TextBox txt_texto;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

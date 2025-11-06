@@ -16,6 +16,12 @@ namespace Reproducto_Musica
 
         public void Play(string filePath)
         {
+            if (waveOut != null && waveOut.PlaybackState == PlaybackState.Paused)
+            {
+                waveOut.Play();
+                return;
+            }
+
             Stop();
 
             audioFileReader = new AudioFileReader(filePath);
@@ -46,5 +52,20 @@ namespace Reproducto_Musica
                 audioFileReader = null;
             }
         }
+        public double GetCurrentTime()
+        {
+            return audioFileReader != null ? audioFileReader.CurrentTime.TotalSeconds : 0;
+        }
+        public double GetTotalTime()
+        {
+            return audioFileReader != null ? audioFileReader.TotalTime.TotalSeconds : 0;
+        }
+        public void SetPosition(double seconds)
+        {
+            if (audioFileReader != null)
+                audioFileReader.CurrentTime = TimeSpan.FromSeconds(seconds);
+        }
+
     }
+
 }
