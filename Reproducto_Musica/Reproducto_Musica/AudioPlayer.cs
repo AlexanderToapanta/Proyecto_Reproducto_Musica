@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -12,8 +8,12 @@ namespace Reproducto_Musica
     {
         private IWavePlayer waveOut;
         private AudioFileReader audioFileReader;
+<<<<<<< Updated upstream
         private SampleAggregator sampleAggregator;
         private VolumeSampleProvider volumeProvider;
+=======
+        private EventHandler<StoppedEventArgs> playbackStoppedHandler;
+>>>>>>> Stashed changes
 
         public event EventHandler OnPlaybackStopped;
         public event Action<float[]> SamplesAvailable;
@@ -34,14 +34,17 @@ namespace Reproducto_Musica
         }
         public void Play(string filePath)
         {
+            // Si está en pausa, reanuda
             if (waveOut != null && waveOut.PlaybackState == PlaybackState.Paused)
             {
                 waveOut.Play();
                 return;
             }
 
-            Stop();
+            // Antes de cargar una nueva pista, liberar recursos anteriores
+            Unload();
 
+<<<<<<< Updated upstream
             audioFileReader = new AudioFileReader(filePath);
 
             var sampleProvider = audioFileReader.ToSampleProvider();
@@ -66,20 +69,59 @@ namespace Reproducto_Musica
         {
             if (waveOut != null)
                 waveOut.Pause();
+=======
+            try
+            {
+                audioFileReader = new AudioFileReader(filePath);
+                waveOut = new WaveOutEvent();
+                waveOut.Init(audioFileReader);
+
+                playbackStoppedHandler = (s, e) => OnPlaybackStopped?.Invoke(this, EventArgs.Empty);
+                waveOut.PlaybackStopped += playbackStoppedHandler;
+
+                waveOut.Play();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al reproducir: " + ex.Message);
+                Unload();
+                throw;
+            }
+>>>>>>> Stashed changes
         }
 
+        // Comportamiento tipo Windows Media Player: detiene y pone posición a 0,
+        // pero mantiene la pista cargada (no libera objetos).
         public void Stop()
         {
             try
             {
                 if (waveOut != null)
-                {
-
                     waveOut.Stop();
 
+                if (audioFileReader != null)
+                    audioFileReader.CurrentTime = TimeSpan.Zero;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al detener el audio: " + ex.Message);
+            }
+        }
 
-                    waveOut.PlaybackStopped -= (s, e) => OnPlaybackStopped?.Invoke(this, EventArgs.Empty);
+        // Detiene y libera recursos (usar antes de cargar otra pista)
+        public void Unload()
+        {
+            try
+            {
+                if (waveOut != null)
+                {
+                    if (playbackStoppedHandler != null)
+                    {
+                        waveOut.PlaybackStopped -= playbackStoppedHandler;
+                        playbackStoppedHandler = null;
+                    }
 
+                    waveOut.Stop();
                     waveOut.Dispose();
                     waveOut = null;
                 }
@@ -100,25 +142,30 @@ namespace Reproducto_Musica
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine("Error al detener el audio: " + ex.Message);
+                Console.WriteLine("Error al descargar recursos de audio: " + ex.Message);
             }
+        }
+
+        public void Pause()
+        {
+            if (waveOut != null)
+                waveOut.Pause();
         }
 
         public double GetCurrentTime()
         {
             return audioFileReader != null ? audioFileReader.CurrentTime.TotalSeconds : 0;
         }
+
         public double GetTotalTime()
         {
             return audioFileReader != null ? audioFileReader.TotalTime.TotalSeconds : 0;
         }
+
         public void SetPosition(double seconds)
         {
             if (audioFileReader != null)
                 audioFileReader.CurrentTime = TimeSpan.FromSeconds(seconds);
         }
-
     }
-
 }
