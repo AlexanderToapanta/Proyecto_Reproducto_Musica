@@ -101,63 +101,49 @@ namespace Reproducto_Musica
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                   
+
                     if (lstw_Canciones.LargeImageList == null)
                     {
                         lstw_Canciones.LargeImageList = new ImageList();
                         lstw_Canciones.LargeImageList.ImageSize = new Size(64, 64);
                     }
 
-                   
-                    lstw_Canciones.BeginUpdate();
-                    try
+
+                    lstw_Canciones.Items.Clear();
+                    lstw_Canciones.LargeImageList.Images.Clear();
+
+                    foreach (var file in ofd.FileNames)
                     {
-                        var existingPlaylist = playlistManager.GetPlaylist();
+                        playlistManager.AddSong(file);
 
-                        foreach (var file in ofd.FileNames)
+
+                        Image cover = playlistManager.GetCoverImage(file);
+
+
+                        if (cover == null)
                         {
-                            
-                            if (existingPlaylist.Contains(file))
-                                continue;
-
-                            
-                            playlistManager.AddSong(file);
-
-                            
-                            Image cover = playlistManager.GetCoverImage(file);
-                            if (cover == null)
-                            {
-                                string defaultCoverPath = Path.Combine(Application.StartupPath, "Resources", "cover.png");
-                                if (File.Exists(defaultCoverPath))
-                                    cover = Image.FromFile(defaultCoverPath);
-                                else
-                                    cover = new Bitmap(64, 64);
-                            }
-
-                           
-                            lstw_Canciones.LargeImageList.Images.Add(cover);
-                            int imageIndex = lstw_Canciones.LargeImageList.Images.Count - 1;
-
-                            var item = new ListViewItem(Path.GetFileName(file), imageIndex);
-                            item.Tag = file;
-                            lstw_Canciones.Items.Add(item);
+                            string defaultCoverPath = Path.Combine(Application.StartupPath, "Resources", "cover.png");
+                            if (File.Exists(defaultCoverPath))
+                                cover = Image.FromFile(defaultCoverPath);
+                            else
+                                cover = new Bitmap(64, 64);
                         }
 
-                       
-                        if (lstw_Canciones.Items.Count > 0 && lstw_Canciones.SelectedItems.Count == 0)
-                        {
-                            int selectIndex = playlistManager.CurrentIndex >= 0 && playlistManager.CurrentIndex < lstw_Canciones.Items.Count
-                                ? playlistManager.CurrentIndex
-                                : 0;
 
-                            lstw_Canciones.Items[selectIndex].Selected = true;
-                            lstw_Canciones.Items[selectIndex].Focused = true;
-                            lstw_Canciones.EnsureVisible(selectIndex);
-                        }
+                        lstw_Canciones.LargeImageList.Images.Add(cover);
+
+
+                        var item = new ListViewItem(Path.GetFileName(file), lstw_Canciones.LargeImageList.Images.Count - 1);
+                        item.Tag = file;
+                        lstw_Canciones.Items.Add(item);
                     }
-                    finally
+
+
+                    if (lstw_Canciones.Items.Count > 0)
                     {
-                        lstw_Canciones.EndUpdate();
+                        lstw_Canciones.Items[0].Selected = true;
+                        lstw_Canciones.Items[0].Focused = true;
+                        playlistManager.SetCurrentIndex(0);
                     }
                 }
             }
@@ -175,35 +161,18 @@ namespace Reproducto_Musica
 
                 audioPlayer.Play(prev);
                 lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(prev);
-                btn_Play.Text = "⏸️ ";
+                btn_Play.Text = "⏸️ Pausar";
                 isPlaying = true;
             }
         }
 
         private void btn_Parar_Click(object sender, EventArgs e)
         {
-            // Salir de la pista: descargar recursos y limpiar UI
-            audioPlayer.Unload();            // libera audio y deja sin pista cargada
+            audioPlayer.Stop();
             isPlaying = false;
             btn_Play.Text = "▶️";
-
-            // Limpiar nombre y tiempo
-            lbl_Nom_Cancion.Text = string.Empty;
-            lbl_Tiempo.Text = string.Empty;
-
-            // Reiniciar progreso
-            hscrb_Progreso.Value = hscrb_Progreso.Minimum;
-            hscrb_Progreso.Maximum = 0;
-
-            // Deseleccionar cualquier ítem en la lista
-            try
-            {
-                lstw_Canciones.SelectedItems.Clear();
-            }
-            catch
-            {
-                // seguridad si el ListView no está listo; no bloquear la UI
-            }
+            lbl_Tiempo.Text = "00:00 / 00:00";
+            hscrb_Progreso.Value = 0;
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
@@ -232,13 +201,13 @@ namespace Reproducto_Musica
             {
                 audioPlayer.Play(currentSong);
                 lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(currentSong);
-                btn_Play.Text = "⏸️ ";
+                btn_Play.Text = "⏸️ Pausar";
                 isPlaying = true;
             }
             else
             {
                 audioPlayer.Pause();
-                btn_Play.Text = "▶️ ";
+                btn_Play.Text = "▶️ Reanudar";
                 isPlaying = false;
             }
         }
@@ -253,7 +222,7 @@ namespace Reproducto_Musica
 
                 audioPlayer.Play(next);
                 lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(next);
-                btn_Play.Text = "⏸️ ";
+                btn_Play.Text = "⏸️ Pausar";
                 isPlaying = true;
             }
         }
@@ -270,13 +239,12 @@ namespace Reproducto_Musica
                 {
                     audioPlayer.Play(selectedSong);
                     lbl_Nom_Cancion.Text = Path.GetFileName(selectedSong);
-                    btn_Play.Text = "⏸️ ";
+                    btn_Play.Text = "⏸️ Pausar";
                     isPlaying = true;
                 }
             }
         }
 
-<<<<<<< Updated upstream
         private void trk_Volumen_Scroll(object sender, EventArgs e)
         {
             float vol = trk_Volumen.Value / 100f;
@@ -287,8 +255,5 @@ namespace Reproducto_Musica
         {
 
         }
-=======
-        
->>>>>>> Stashed changes
     }
 }
