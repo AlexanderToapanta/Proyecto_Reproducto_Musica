@@ -19,13 +19,41 @@ namespace Reproducto_Musica
         private PlaylistManager playlistManager;
         private bool isPlaying = false;
         private bool isUserScrolling = false;
+
+        private VisualizerControl visualizer;
         public MainForm()
         {
             audioPlayer = new AudioPlayer();
             playlistManager = new PlaylistManager();
             InitializeComponent();
-            
-            
+
+            visualizer = new VisualizerControl();
+            visualizer.Location = new Point(115, 46);
+            visualizer.Size = new Size(616, 200);
+            visualizer.BackColor = Color.Black;
+            visualizer.Dock = DockStyle.Top;
+            visualizer.Height = 220;
+            this.Controls.Add(visualizer);
+
+            audioPlayer.SamplesAvailable += visualizer.AddSamples;
+
+            // initialize controls
+            cmb_VisualMode.SelectedIndex = 0;
+            trk_Volumen.Value = 100;
+            audioPlayer.Volume = 1f;
+
+            cmb_VisualMode.SelectedIndexChanged += (s, e) =>
+            {
+                if (cmb_VisualMode.SelectedItem == null) return;
+                string m = cmb_VisualMode.SelectedItem.ToString();
+                switch (m)
+                {
+                    case "Barras": visualizer.Mode = VisualMode.Barras; break;
+                    case "Onda": visualizer.Mode = VisualMode.Onda; break;
+                    default: visualizer.Mode = VisualMode.Barras; break;
+                }
+            };
+
 
         }
 
@@ -217,8 +245,15 @@ namespace Reproducto_Musica
             }
         }
 
-     
+        private void trk_Volumen_Scroll(object sender, EventArgs e)
+        {
+            float vol = trk_Volumen.Value / 100f;
+            audioPlayer.Volume = vol;
+        }
 
-       
+        private void cmb_VisualMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

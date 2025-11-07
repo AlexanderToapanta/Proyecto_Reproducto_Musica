@@ -56,8 +56,7 @@ namespace Reproducto_Musica
             var waveProvider = new SampleToWaveProvider16(volumeProvider);
 
             waveOut = new WaveOutEvent();
-            // Initialize with the provider that wraps the SampleAggregator so it will be read
-            waveOut.Init(waveProvider);
+            waveOut.Init(audioFileReader);
             waveOut.PlaybackStopped += (s, e) => OnPlaybackStopped?.Invoke(this, EventArgs.Empty);
             waveOut.Play();
         }
