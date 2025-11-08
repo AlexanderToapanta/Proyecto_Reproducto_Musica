@@ -1,0 +1,133 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using TagLib;
+
+
+namespace Reproducto_Musica
+{
+    internal class PlaylistManager
+    {
+        private List<string> playlist = new List<string>();
+        public int CurrentIndex { get; private set; } = -1;
+
+        public void AddSong(string filePath)
+        {
+            playlist.Add(filePath);
+            if (CurrentIndex == -1)
+                CurrentIndex = 0;
+        }
+        public Image GetCoverImage(string filePath)
+        {
+            try
+            {
+                var file = TagLib.File.Create(filePath);
+                if (file.Tag.Pictures != null && file.Tag.Pictures.Length > 0)
+                {
+                    var bin = (byte[])(file.Tag.Pictures[0].Data.Data);
+                    using (var ms = new MemoryStream(bin))
+                    {
+                        return Image.FromStream(ms);
+                    }
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public void SetCurrentIndex(int index)
+        {
+            if (index >= 0 && index < playlist.Count)
+                CurrentIndex = index;
+        }
+
+        public string GetCurrentSong()
+        {
+            if (CurrentIndex >= 0 && CurrentIndex < playlist.Count)
+                return playlist[CurrentIndex];
+            return null;
+        }
+
+        public string NextSong()
+        {
+            if (playlist.Count == 0) return null;
+            CurrentIndex = (CurrentIndex + 1) % playlist.Count;
+            return playlist[CurrentIndex];
+        }
+
+        public string PreviousSong()
+        {
+            if (playlist.Count == 0) return null;
+            CurrentIndex = (CurrentIndex - 1 + playlist.Count) % playlist.Count;
+            return playlist[CurrentIndex];
+        }
+
+
+        public List<string> GetPlaylist() => playlist;
+        private void btn_CargarMusica_Click(object sender, EventArgs e)
+        {
+
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Archivos de audio|.mp3;.wav";
+                ofd.Multiselect = true;
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    // Preparar ImageList si hace falta
+                    if (lstw_Canciones.LargeImageList == null)
+                    {
+                        lstw_Canciones.LargeImageList = new ImageList();
+                        lstw_Canciones.LargeImageList.ImageSize = new Size(64, 64);
+                    }
+
+                    // Determinar si la lista estaba vacía antes de añadir (para seleccionar la primera canción añadida)
+                    bool wasEmpty = lstw_Canciones.Items.Count == 0;
+
+                    foreach (var file in ofd.FileNames)
+                    {
+                        // Evitar duplicados por ruta exacta (ignorando mayúsculas)
+                        if (playlistManager.GetPlaylist().Any(p => string.Equals(Path.GetFullPath(p), Path.GetFullPath(file), StringComparison.OrdinalIgnoreCase)))
+                            continue;
+
+                        playlistManager.AddSong(file);
+
+                        Image cover = playlistManager.GetCoverImage(file);
+
+                        if (cover == null)
+                        {
+                            string defaultCoverPath = Path.Combine(Application.StartupPath, "Resources", "cover.png");
+                            if (File.Exists(defaultCoverPath))
+                                cover = Image.FromFile(defaultCoverPath);
+                            else
+                                cover = new Bitmap(64, 64);
+                        }
+
+                        lstw_Canciones.LargeImageList.Images.Add(cover);
+
+                        var item = new ListViewItem(Path.GetFileName(file), lstw_Canciones.LargeImageList.Images.Count - 1);
+                        item.Tag = file;
+                        lstw_Canciones.Items.Add(item);
+                    }
+
+                    // Si antes no había canciones, seleccionar la primera añadida
+                    if (wasEmpty && lstw_Canciones.Items.Count > 0)
+                    {
+                        lstw_Canciones.Items[0].Selected = true;
+                        lstw_Canciones.Items[0].Focused = true;
+                        playlistManager.SetCurrentIndex(0);
+                    }
+                }
+            }
+
+        }
+    }
+}

@@ -1,38 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\",
+  "WorkspaceRootPath": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\dell\\documents\\proyecto_grafica_1p\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\megapc\\onedrive\\escritorio\\grafica\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\dell\\documents\\proyecto_grafica_1p\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\visualizercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\visualizercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\dell\\documents\\proyecto_grafica_1p\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\visualizercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\visualizercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\dell\\documents\\proyecto_grafica_1p\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\fftprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\fftprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\audioplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\audioplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|c:\\users\\dell\\documents\\proyecto_grafica_1p\\proyecto_reproducto_musica\\reproducto_musica\\reproducto_musica\\sampleaggregator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\sampleaggregator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\playlistmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\playlistmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\playlistmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\reproducto_musica\\visualizercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3E84A798-42DD-4A87-8FCA-CD03D43C8A28}|Reproducto_Musica\\Reproductor_Musica.csproj|solutionrelative:reproducto_musica\\visualizercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -48,23 +32,22 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "VisualizerControl.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\VisualizerControl.cs",
+              "DocumentMoniker": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\VisualizerControl.cs",
               "RelativeDocumentMoniker": "Reproducto_Musica\\VisualizerControl.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\VisualizerControl.cs",
+              "ToolTip": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\VisualizerControl.cs",
               "RelativeToolTip": "Reproducto_Musica\\VisualizerControl.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwA8AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T13:41:35.305Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-07T13:41:35.305Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "MainForm.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs",
+              "DocumentMoniker": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs",
               "RelativeDocumentMoniker": "Reproducto_Musica\\MainForm.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs [Dise\u00F1o]*",
-              "RelativeToolTip": "Reproducto_Musica\\MainForm.cs [Dise\u00F1o]*",
+              "ToolTip": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs [Dise\u00F1o]",
+              "RelativeToolTip": "Reproducto_Musica\\MainForm.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-06T19:48:26.259Z",
               "EditorCaption": " [Dise\u00F1o]"
@@ -73,11 +56,11 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "MainForm.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs",
+              "DocumentMoniker": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs",
               "RelativeDocumentMoniker": "Reproducto_Musica\\MainForm.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs*",
-              "RelativeToolTip": "Reproducto_Musica\\MainForm.cs*",
-              "ViewState": "AgIAACgAAAAAAAAAAAAQwDAAAAAaAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\MainForm.cs",
+              "RelativeToolTip": "Reproducto_Musica\\MainForm.cs",
+              "ViewState": "AgIAAA0BAAAAAAAAAIBZwOQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-06T20:44:39.445Z",
               "EditorCaption": ""
@@ -85,65 +68,15 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "VisualizerControl.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\VisualizerControl.cs",
-              "RelativeDocumentMoniker": "Reproducto_Musica\\VisualizerControl.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\VisualizerControl.cs [Dise\u00F1o]",
-              "RelativeToolTip": "Reproducto_Musica\\VisualizerControl.cs [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T13:41:40.759Z",
-              "EditorCaption": " [Dise\u00F1o]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "FftProcessor.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\FftProcessor.cs",
-              "RelativeDocumentMoniker": "Reproducto_Musica\\FftProcessor.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\FftProcessor.cs",
-              "RelativeToolTip": "Reproducto_Musica\\FftProcessor.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAQwFIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T13:36:29.977Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "SampleAggregator.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\SampleAggregator.cs",
-              "RelativeDocumentMoniker": "Reproducto_Musica\\SampleAggregator.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\SampleAggregator.cs",
-              "RelativeToolTip": "Reproducto_Musica\\SampleAggregator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T13:35:22.49Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AudioPlayer.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\AudioPlayer.cs",
-              "RelativeDocumentMoniker": "Reproducto_Musica\\AudioPlayer.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\AudioPlayer.cs",
-              "RelativeToolTip": "Reproducto_Musica\\AudioPlayer.cs",
-              "ViewState": "AgIAAGsAAAAAAAAAAAAswHwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T20:34:35.584Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
               "Title": "PlaylistManager.cs",
-              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\PlaylistManager.cs",
+              "DocumentMoniker": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\PlaylistManager.cs",
               "RelativeDocumentMoniker": "Reproducto_Musica\\PlaylistManager.cs",
-              "ToolTip": "C:\\Users\\DELL\\Documents\\PROYECTO_GRAFICA_1P\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\PlaylistManager.cs",
+              "ToolTip": "C:\\Users\\MEGAPC\\OneDrive\\Escritorio\\GRAFICA\\Proyecto_Reproducto_Musica\\Reproducto_Musica\\Reproducto_Musica\\PlaylistManager.cs",
               "RelativeToolTip": "Reproducto_Musica\\PlaylistManager.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAcwEYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEkAAAAAAAAAAEBUwEwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T20:15:19.805Z"
+              "WhenOpened": "2025-11-06T20:15:19.805Z",
+              "EditorCaption": ""
             }
           ]
         }

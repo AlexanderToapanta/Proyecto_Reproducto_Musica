@@ -18,6 +18,7 @@ namespace Reproducto_Musica
         private PlaylistManager playlistManager;
         private bool isPlaying = false;
         private bool isUserScrolling = false;
+        private ContextMenuStrip contextMenuStrip;
         private VisualizerControl visualizer;
 
         public MainForm()
@@ -25,6 +26,9 @@ namespace Reproducto_Musica
             audioPlayer = new AudioPlayer();
             playlistManager = new PlaylistManager();
             InitializeComponent();
+
+            // Configurar menú contextual para eliminar canciones
+            SetupContextMenu();
 
             visualizer = new VisualizerControl();
             visualizer.Location = new Point(115, 46);
@@ -52,6 +56,98 @@ namespace Reproducto_Musica
                     default: visualizer.Mode = VisualMode.Barras; break;
                 }
             };
+        }
+
+        private void SetupContextMenu()
+        {
+            contextMenuStrip = new ContextMenuStrip();
+            
+            // Opción para eliminar canción seleccionada
+            ToolStripMenuItem eliminarCancion = new ToolStripMenuItem("Eliminar canción");
+            eliminarCancion.Click += EliminarCancionSeleccionada_Click;
+            contextMenuStrip.Items.Add(eliminarCancion);
+            
+            // Separador
+            contextMenuStrip.Items.Add(new ToolStripSeparator());
+            
+            // Opción para limpiar toda la playlist
+            ToolStripMenuItem limpiarPlaylist = new ToolStripMenuItem("Limpiar toda la playlist");
+            limpiarPlaylist.Click += LimpiarPlaylist_Click;
+            contextMenuStrip.Items.Add(limpiarPlaylist);
+            
+            // Asignar el menú contextual al ListView
+            if (lstw_Canciones != null)
+                lstw_Canciones.ContextMenuStrip = contextMenuStrip;
+        }
+
+        private void EliminarCancionSeleccionada_Click(object sender, EventArgs e)
+        {
+            if (lstw_Canciones.SelectedItems.Count > 0)
+            {
+                int selectedIndex = lstw_Canciones.SelectedItems[0].Index;
+                
+                // Confirmar eliminación
+                string nombreCancion = lstw_Canciones.SelectedItems[0].Text;
+                var resultado = MessageBox.Show(
+                    $"¿Estás seguro de que quieres eliminar '{nombreCancion}' de la playlist?",
+                    "Confirmar eliminación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                
+                if (resultado == DialogResult.Yes)
+                {
+                    // Si es la canción que se está reproduciendo, detener primero
+                    if (selectedIndex == playlistManager.CurrentIndex && isPlaying)
+                    {
+                        audioPlayer.Stop();
+                        isPlaying = false;
+                        btn_Play.Text = "▶";
+                        lbl_Nom_Cancion.Text = "";
+                        lbl_Tiempo.Text = "";
+                        hscrb_Progreso.Value = 0;
+                    }
+                    
+                    // Eliminar de la vista
+                    lstw_Canciones.Items.RemoveAt(selectedIndex);
+                    lstw_Canciones.LargeImageList.Images.RemoveAt(selectedIndex);
+                    
+                    // Eliminar del playlist manager
+                    playlistManager.RemoveSongAt(selectedIndex);
+                }
+            }
+        }
+
+        private void LimpiarPlaylist_Click(object sender, EventArgs e)
+        {
+            if (lstw_Canciones.Items.Count > 0)
+            {
+                var resultado = MessageBox.Show(
+                    "¿Estás seguro de que quieres eliminar todas las canciones de la playlist?",
+                    "Limpiar playlist",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+                
+                if (resultado == DialogResult.Yes)
+                {
+                    // Detener reproducción si está activa
+                    if (isPlaying)
+                    {
+                        audioPlayer.Stop();
+                        isPlaying = false;
+                        btn_Play.Text = "▶";
+                        lbl_Nom_Cancion.Text = "";
+                        lbl_Tiempo.Text = "";
+                        hscrb_Progreso.Value = 0;
+                    }
+                    
+                    // Limpiar vista
+                    lstw_Canciones.Items.Clear();
+                    lstw_Canciones.LargeImageList.Images.Clear();
+                    
+                    // Limpiar playlist manager
+                    playlistManager.ClearPlaylist();
+                }
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -171,47 +267,32 @@ namespace Reproducto_Musica
             lbl_Tiempo.Text = "00:00 / 00:00";
             hscrb_Progreso.Value = 0;
             
-            // NO deseleccionar la canción - mantener la selección actual
-            // para que al presionar Play continúe con la misma canción
+            // Opcional: deseleccionar la canción en la vista
+            lstw_Canciones.SelectedItems.Clear();
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
-            string currentSong = playlistManager.GetCurrentSong();
-            
-            // Si hay una canción actual en el PlaylistManager, usarla
-            if (currentSong != null)
+            if (lstw_Canciones.SelectedItems.Count == 0)
             {
-                // Asegurar que la canción actual esté seleccionada en la vista
-                if (playlistManager.CurrentIndex >= 0 && playlistManager.CurrentIndex < lstw_Canciones.Items.Count)
-                {
-                    lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
-                    lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
-                }
+                MessageBox.Show("Selecciona una canción.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
-            // Si no hay canción actual, verificar si hay una seleccionada en la vista
-            else if (lstw_Canciones.SelectedItems.Count > 0)
+            string currentSong = playlistManager.GetCurrentSong();
+
+            int selectedIndex = -1;
+            if (lstw_Canciones.SelectedIndices.Count > 0)
+                selectedIndex = lstw_Canciones.SelectedIndices[0];
+            if (currentSong == null && selectedIndex >= 0)
             {
-                int selectedIndex = lstw_Canciones.SelectedIndices[0];
                 currentSong = playlistManager.GetPlaylist()[selectedIndex];
                 playlistManager.SetCurrentIndex(selectedIndex);
             }
-            // Si no hay nada seleccionado y no hay canción actual, usar la primera de la lista
-            else if (lstw_Canciones.Items.Count > 0)
+            if (currentSong == null)
             {
-                currentSong = playlistManager.GetPlaylist()[0];
-                playlistManager.SetCurrentIndex(0);
-                lstw_Canciones.Items[0].Selected = true;
-                lstw_Canciones.Items[0].Focused = true;
-            }
-            // Si no hay canciones en la lista
-            else
-            {
-                MessageBox.Show("No hay canciones en la playlist.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No hay ninguna canción seleccionada.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-            // Reproducir o pausar
             if (!isPlaying)
             {
                 audioPlayer.Play(currentSong);

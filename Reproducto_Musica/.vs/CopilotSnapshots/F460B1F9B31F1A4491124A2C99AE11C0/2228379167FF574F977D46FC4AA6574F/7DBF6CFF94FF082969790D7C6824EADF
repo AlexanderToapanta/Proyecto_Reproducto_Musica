@@ -13,13 +13,14 @@ namespace Reproducto_Musica
 {
     public partial class MainForm : Form
     {
+
         private Timer tmr_Reproductor;
         private AudioPlayer audioPlayer;
         private PlaylistManager playlistManager;
         private bool isPlaying = false;
         private bool isUserScrolling = false;
-        private VisualizerControl visualizer;
 
+        private VisualizerControl visualizer;
         public MainForm()
         {
             audioPlayer = new AudioPlayer();
@@ -164,54 +165,58 @@ namespace Reproducto_Musica
 
         private void btn_Parar_Click(object sender, EventArgs e)
         {
-            // SOLO detener reproducción sin eliminar canciones
+            // Detener reproducción y limpiar estado visible
             audioPlayer.Stop();
             isPlaying = false;
             btn_Play.Text = "▶";
-            lbl_Tiempo.Text = "00:00 / 00:00";
+
+            // Limpiar labels como solicitaste
+            lbl_Nom_Cancion.Text = "";
+            lbl_Tiempo.Text = "";
+
+            // Reset del progreso y deselect en la vista
             hscrb_Progreso.Value = 0;
-            
-            // NO deseleccionar la canción - mantener la selección actual
-            // para que al presionar Play continúe con la misma canción
+            lstw_Canciones.SelectedItems.Clear();
+
+            // Eliminar la canción actual de la playlist y de la vista
+            if (playlistManager.CurrentIndex >= 0 && playlistManager.CurrentIndex < lstw_Canciones.Items.Count)
+            {
+                int currentIndex = playlistManager.CurrentIndex;
+                
+                // Remover de la vista
+                lstw_Canciones.Items.RemoveAt(currentIndex);
+                lstw_Canciones.LargeImageList.Images.RemoveAt(currentIndex);
+                
+                // Remover del playlist manager
+                playlistManager.RemoveCurrentSong();
+            }
+
+            // Resetar índice actual en el playlist para que no quede canción "en pista"
+            playlistManager.ClearCurrentIndex();
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
-            string currentSong = playlistManager.GetCurrentSong();
-            
-            // Si hay una canción actual en el PlaylistManager, usarla
-            if (currentSong != null)
+            if (lstw_Canciones.SelectedItems.Count == 0)
             {
-                // Asegurar que la canción actual esté seleccionada en la vista
-                if (playlistManager.CurrentIndex >= 0 && playlistManager.CurrentIndex < lstw_Canciones.Items.Count)
-                {
-                    lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
-                    lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
-                }
+                MessageBox.Show("Selecciona una canción.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
-            // Si no hay canción actual, verificar si hay una seleccionada en la vista
-            else if (lstw_Canciones.SelectedItems.Count > 0)
+            string currentSong = playlistManager.GetCurrentSong();
+
+            int selectedIndex = -1;
+            if (lstw_Canciones.SelectedIndices.Count > 0)
+                selectedIndex = lstw_Canciones.SelectedIndices[0];
+            if (currentSong == null && selectedIndex >= 0)
             {
-                int selectedIndex = lstw_Canciones.SelectedIndices[0];
                 currentSong = playlistManager.GetPlaylist()[selectedIndex];
                 playlistManager.SetCurrentIndex(selectedIndex);
             }
-            // Si no hay nada seleccionado y no hay canción actual, usar la primera de la lista
-            else if (lstw_Canciones.Items.Count > 0)
+            if (currentSong == null)
             {
-                currentSong = playlistManager.GetPlaylist()[0];
-                playlistManager.SetCurrentIndex(0);
-                lstw_Canciones.Items[0].Selected = true;
-                lstw_Canciones.Items[0].Focused = true;
-            }
-            // Si no hay canciones en la lista
-            else
-            {
-                MessageBox.Show("No hay canciones en la playlist.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No hay ninguna canción seleccionada.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-            // Reproducir o pausar
             if (!isPlaying)
             {
                 audioPlayer.Play(currentSong);

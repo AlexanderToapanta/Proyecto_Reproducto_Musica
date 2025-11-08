@@ -13,13 +13,14 @@ namespace Reproducto_Musica
 {
     public partial class MainForm : Form
     {
+
         private Timer tmr_Reproductor;
         private AudioPlayer audioPlayer;
         private PlaylistManager playlistManager;
         private bool isPlaying = false;
         private bool isUserScrolling = false;
-        private VisualizerControl visualizer;
 
+        private VisualizerControl visualizer;
         public MainForm()
         {
             audioPlayer = new AudioPlayer();
@@ -52,6 +53,8 @@ namespace Reproducto_Musica
                     default: visualizer.Mode = VisualMode.Barras; break;
                 }
             };
+
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -62,7 +65,6 @@ namespace Reproducto_Musica
             hscrb_Progreso.LargeChange = 1;
             hscrb_Progreso.Minimum = 0;
         }
-
         private void tm_Tiempo_Musica_Tick(object sender, EventArgs e)
         {
             if (isPlaying && !isUserScrolling)
@@ -81,7 +83,6 @@ namespace Reproducto_Musica
                 lbl_Tiempo.Text = $"{currentTime:mm\\:ss} / {totalTime:mm\\:ss}";
             }
         }
-
         private void hscrb_Progreso_Scroll(object sender, ScrollEventArgs e)
         {
             isUserScrolling = true;
@@ -90,9 +91,9 @@ namespace Reproducto_Musica
             audioPlayer.SetPosition(newPosition);
             isUserScrolling = false;
         }
-
         private void btn_CargarMusica_Click(object sender, EventArgs e)
         {
+
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Archivos de audio|*.mp3;*.wav";
@@ -145,13 +146,15 @@ namespace Reproducto_Musica
                     }
                 }
             }
-        }
+        
+            }
 
         private void btn_Anterior_Click(object sender, EventArgs e)
         {
             string prev = playlistManager.PreviousSong();
             if (prev != null)
             {
+
                 lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
                 lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
 
@@ -164,111 +167,30 @@ namespace Reproducto_Musica
 
         private void btn_Parar_Click(object sender, EventArgs e)
         {
-            // SOLO detener reproducción sin eliminar canciones
+            // Detener reproducción y limpiar estado visible
             audioPlayer.Stop();
             isPlaying = false;
             btn_Play.Text = "▶";
-            lbl_Tiempo.Text = "00:00 / 00:00";
+
+            // Limpiar labels como solicitaste
+            lbl_Nom_Cancion.Text = "";
+            lbl_Tiempo.Text = "";
+
+            // Reset del progreso y deselect en la vista
             hscrb_Progreso.Value = 0;
-            
-            // NO deseleccionar la canción - mantener la selección actual
-            // para que al presionar Play continúe con la misma canción
-        }
+            lstw_Canciones.SelectedItems.Clear();
 
-        private void btn_Play_Click(object sender, EventArgs e)
-        {
-            string currentSong = playlistManager.GetCurrentSong();
-            
-            // Si hay una canción actual en el PlaylistManager, usarla
-            if (currentSong != null)
+            // Eliminar la canción actual de la playlist y de la vista
+            if (playlistManager.CurrentIndex >= 0 && playlistManager.CurrentIndex < lstw_Canciones.Items.Count)
             {
-                // Asegurar que la canción actual esté seleccionada en la vista
-                if (playlistManager.CurrentIndex >= 0 && playlistManager.CurrentIndex < lstw_Canciones.Items.Count)
-                {
-                    lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
-                    lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
-                }
-            }
-            // Si no hay canción actual, verificar si hay una seleccionada en la vista
-            else if (lstw_Canciones.SelectedItems.Count > 0)
-            {
-                int selectedIndex = lstw_Canciones.SelectedIndices[0];
-                currentSong = playlistManager.GetPlaylist()[selectedIndex];
-                playlistManager.SetCurrentIndex(selectedIndex);
-            }
-            // Si no hay nada seleccionado y no hay canción actual, usar la primera de la lista
-            else if (lstw_Canciones.Items.Count > 0)
-            {
-                currentSong = playlistManager.GetPlaylist()[0];
-                playlistManager.SetCurrentIndex(0);
-                lstw_Canciones.Items[0].Selected = true;
-                lstw_Canciones.Items[0].Focused = true;
-            }
-            // Si no hay canciones en la lista
-            else
-            {
-                MessageBox.Show("No hay canciones en la playlist.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                int currentIndex = playlistManager.CurrentIndex;
+                
+                // Remover de la vista
+                lstw_Canciones.Items.RemoveAt(currentIndex);
+                lstw_Canciones.LargeImageList.Images.RemoveAt(currentIndex);
+                
+                // Remover del playlist manager
+                playlistManager.RemoveCurrentSong();
             }
 
-            // Reproducir o pausar
-            if (!isPlaying)
-            {
-                audioPlayer.Play(currentSong);
-                lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(currentSong);
-                btn_Play.Text = "⏸️ Pausar";
-                isPlaying = true;
-            }
-            else
-            {
-                audioPlayer.Pause();
-                btn_Play.Text = "▶️ Reanudar";
-                isPlaying = false;
-            }
-        }
-
-        private void btn_Siguiente_Click(object sender, EventArgs e)
-        {
-            string next = playlistManager.NextSong();
-            if (next != null)
-            {
-                lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
-                lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
-
-                audioPlayer.Play(next);
-                lbl_Nom_Cancion.Text = System.IO.Path.GetFileName(next);
-                btn_Play.Text = "⏸️ Pausar";
-                isPlaying = true;
-            }
-        }
-
-        private void lstw_Canciones_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstw_Canciones.SelectedItems.Count > 0)
-            {
-                int index = lstw_Canciones.SelectedItems[0].Index;
-                playlistManager.SetCurrentIndex(index);
-
-                string selectedSong = playlistManager.GetCurrentSong();
-                if (selectedSong != null)
-                {
-                    audioPlayer.Play(selectedSong);
-                    lbl_Nom_Cancion.Text = Path.GetFileName(selectedSong);
-                    btn_Play.Text = "⏸️ Pausar";
-                    isPlaying = true;
-                }
-            }
-        }
-
-        private void trk_Volumen_Scroll(object sender, EventArgs e)
-        {
-            float vol = trk_Volumen.Value / 100f;
-            audioPlayer.Volume = vol;
-        }
-
-        private void cmb_VisualMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-    }
-}
+            // Resetar índice current
