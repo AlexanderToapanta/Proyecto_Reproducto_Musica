@@ -18,7 +18,6 @@ namespace Reproducto_Musica
         private PlaylistManager playlistManager;
         private bool isPlaying = false;
         private bool isUserScrolling = false;
-        private ContextMenuStrip contextMenuStrip;
         private VisualizerControl visualizer;
 
         public MainForm()
@@ -26,9 +25,6 @@ namespace Reproducto_Musica
             audioPlayer = new AudioPlayer();
             playlistManager = new PlaylistManager();
             InitializeComponent();
-
-            // Configurar menú contextual para eliminar canciones
-            SetupContextMenu();
 
             visualizer = new VisualizerControl();
             visualizer.Location = new Point(115, 46);
@@ -58,133 +54,6 @@ namespace Reproducto_Musica
             };
         }
 
-        private void SetupContextMenu()
-        {
-            contextMenuStrip = new ContextMenuStrip();
-            
-            // Opción para eliminar canción seleccionada
-            ToolStripMenuItem eliminarCancion = new ToolStripMenuItem("Eliminar canción");
-            eliminarCancion.Click += EliminarCancionSeleccionada_Click;
-            contextMenuStrip.Items.Add(eliminarCancion);
-            
-            // Separador
-            contextMenuStrip.Items.Add(new ToolStripSeparator());
-            
-            // Opción para limpiar toda la playlist
-            ToolStripMenuItem limpiarPlaylist = new ToolStripMenuItem("Limpiar toda la playlist");
-            limpiarPlaylist.Click += LimpiarPlaylist_Click;
-            contextMenuStrip.Items.Add(limpiarPlaylist);
-            
-            // Separador
-            contextMenuStrip.Items.Add(new ToolStripSeparator());
-            
-        }
-
-        private void EliminarCancionSeleccionada_Click(object sender, EventArgs e)
-        {
-            if (lstw_Canciones.SelectedItems.Count > 0)
-            {
-                int selectedIndex = lstw_Canciones.SelectedItems[0].Index;
-                
-                // Confirmar eliminación
-                string nombreCancion = lstw_Canciones.SelectedItems[0].Text;
-                var resultado = MessageBox.Show(
-                    $"¿Estás seguro de que quieres eliminar '{nombreCancion}' de la playlist?\n\n" +
-                    "Esta acción no se puede deshacer.",
-                    "Confirmar eliminación",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-                
-                if (resultado == DialogResult.Yes)
-                {
-                    // Si es la canción que se está reproduciendo, detener primero
-                    if (selectedIndex == playlistManager.CurrentIndex && isPlaying)
-                    {
-                        audioPlayer.Stop();
-                        isPlaying = false;
-                        btn_Play.Text = "▶";
-                        lbl_Nom_Cancion.Text = "";
-                        lbl_Tiempo.Text = "00:00 / 00:00";
-                        hscrb_Progreso.Value = 0;
-                    }
-                    
-                    // Eliminar de la vista
-                    lstw_Canciones.Items.RemoveAt(selectedIndex);
-                    if (lstw_Canciones.LargeImageList != null && selectedIndex < lstw_Canciones.LargeImageList.Images.Count)
-                    {
-                        lstw_Canciones.LargeImageList.Images.RemoveAt(selectedIndex);
-                    }
-                    
-                    // Eliminar del playlist manager
-                    playlistManager.RemoveSongAt(selectedIndex);
-                    
-                    // Mostrar mensaje de confirmación
-                    MessageBox.Show($"Canción '{nombreCancion}' eliminada de la playlist.", 
-                                  "Eliminación exitosa", 
-                                  MessageBoxButtons.OK, 
-                                  MessageBoxIcon.Information);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Selecciona una canción para eliminar.", 
-                              "No hay selección", 
-                              MessageBoxButtons.OK, 
-                              MessageBoxIcon.Warning);
-            }
-        }
-
-        private void LimpiarPlaylist_Click(object sender, EventArgs e)
-        {
-            if (lstw_Canciones.Items.Count > 0)
-            {
-                var resultado = MessageBox.Show(
-                    $"¿Estás seguro de que quieres eliminar todas las {lstw_Canciones.Items.Count} canciones de la playlist?\n\n" +
-                    "Esta acción no se puede deshacer y eliminará toda la música cargada.",
-                    "Limpiar playlist completa",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-                
-                if (resultado == DialogResult.Yes)
-                {
-                    // Detener reproducción si está activa
-                    if (isPlaying)
-                    {
-                        audioPlayer.Stop();
-                        isPlaying = false;
-                        btn_Play.Text = "▶";
-                        lbl_Nom_Cancion.Text = "";
-                        lbl_Tiempo.Text = "00:00 / 00:00";
-                        hscrb_Progreso.Value = 0;
-                    }
-                    
-                    // Limpiar vista
-                    int cantidadEliminada = lstw_Canciones.Items.Count;
-                    lstw_Canciones.Items.Clear();
-                    if (lstw_Canciones.LargeImageList != null)
-                    {
-                        lstw_Canciones.LargeImageList.Images.Clear();
-                    }
-                    
-                    // Limpiar playlist manager
-                    playlistManager.ClearPlaylist();
-                    
-                    // Mostrar mensaje de confirmación
-                    MessageBox.Show($"Playlist limpiada correctamente.\n{cantidadEliminada} canciones eliminadas.", 
-                                  "Playlist limpiada", 
-                                  MessageBoxButtons.OK, 
-                                  MessageBoxIcon.Information);
-                }
-            }
-            else
-            {
-                MessageBox.Show("No hay canciones en la playlist para eliminar.", 
-                              "Playlist vacía", 
-                              MessageBoxButtons.OK, 
-                              MessageBoxIcon.Information);
-            }
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             tm_Tiempo_Musica.Interval = 500;
@@ -192,12 +61,6 @@ namespace Reproducto_Musica
             tm_Tiempo_Musica.Start();
             hscrb_Progreso.LargeChange = 1;
             hscrb_Progreso.Minimum = 0;
-            
-            // Asignar el menú contextual al ListView después de que se haya inicializado
-            if (lstw_Canciones != null)
-            {
-                lstw_Canciones.ContextMenuStrip = contextMenuStrip;
-            }
         }
 
         private void tm_Tiempo_Musica_Tick(object sender, EventArgs e)

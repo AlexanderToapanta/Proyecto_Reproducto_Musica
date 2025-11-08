@@ -49,73 +49,11 @@ namespace Reproducto_Musica
                 CurrentIndex = index;
         }
 
-        public void ClearCurrentIndex()
-        {
-            CurrentIndex = -1;
-        }
-
         public string GetCurrentSong()
         {
             if (CurrentIndex >= 0 && CurrentIndex < playlist.Count)
                 return playlist[CurrentIndex];
             return null;
-        }
-
-        public bool RemoveCurrentSong()
-        {
-            if (CurrentIndex >= 0 && CurrentIndex < playlist.Count)
-            {
-                playlist.RemoveAt(CurrentIndex);
-                
-                // Ajustar el índice después de eliminar
-                if (playlist.Count == 0)
-                {
-                    CurrentIndex = -1;
-                }
-                else if (CurrentIndex >= playlist.Count)
-                {
-                    CurrentIndex = playlist.Count - 1;
-                }
-                
-                return true;
-            }
-            return false;
-        }
-
-        public bool RemoveSongAt(int index)
-        {
-            if (index >= 0 && index < playlist.Count)
-            {
-                playlist.RemoveAt(index);
-                
-                // Ajustar el CurrentIndex si es necesario
-                if (playlist.Count == 0)
-                {
-                    CurrentIndex = -1;
-                }
-                else if (index < CurrentIndex)
-                {
-                    // Si eliminamos una canción antes de la actual, decrementar el índice
-                    CurrentIndex--;
-                }
-                else if (index == CurrentIndex)
-                {
-                    // Si eliminamos la canción actual, ajustar el índice
-                    if (CurrentIndex >= playlist.Count)
-                    {
-                        CurrentIndex = playlist.Count > 0 ? playlist.Count - 1 : -1;
-                    }
-                }
-                
-                return true;
-            }
-            return false;
-        }
-
-        public void ClearPlaylist()
-        {
-            playlist.Clear();
-            CurrentIndex = -1;
         }
 
         public string NextSong()

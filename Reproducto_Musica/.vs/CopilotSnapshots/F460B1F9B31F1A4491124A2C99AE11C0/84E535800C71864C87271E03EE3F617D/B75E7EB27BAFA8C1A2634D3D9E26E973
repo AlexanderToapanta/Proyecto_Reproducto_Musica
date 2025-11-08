@@ -63,7 +63,7 @@ namespace Reproducto_Musica
             contextMenuStrip = new ContextMenuStrip();
             
             // Opción para eliminar canción seleccionada
-            ToolStripMenuItem eliminarCancion = new ToolStripMenuItem("Eliminar canción");
+            ToolStripMenuItem eliminarCancion = new ToolStripMenuItem("🗑️ Eliminar canción");
             eliminarCancion.Click += EliminarCancionSeleccionada_Click;
             contextMenuStrip.Items.Add(eliminarCancion);
             
@@ -71,13 +71,17 @@ namespace Reproducto_Musica
             contextMenuStrip.Items.Add(new ToolStripSeparator());
             
             // Opción para limpiar toda la playlist
-            ToolStripMenuItem limpiarPlaylist = new ToolStripMenuItem("Limpiar toda la playlist");
+            ToolStripMenuItem limpiarPlaylist = new ToolStripMenuItem("🧹 Limpiar toda la playlist");
             limpiarPlaylist.Click += LimpiarPlaylist_Click;
             contextMenuStrip.Items.Add(limpiarPlaylist);
             
             // Separador
             contextMenuStrip.Items.Add(new ToolStripSeparator());
             
+            // Opción informativa
+            ToolStripMenuItem info = new ToolStripMenuItem("📝 Clic derecho para más opciones");
+            info.Enabled = false;
+            contextMenuStrip.Items.Add(info);
         }
 
         private void EliminarCancionSeleccionada_Click(object sender, EventArgs e)
