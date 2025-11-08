@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioPlayer.cs" />
+    <Compile Include="BeatDetector.cs" />
     <Compile Include="FftProcessor.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

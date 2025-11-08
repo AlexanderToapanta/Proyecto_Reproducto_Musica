@@ -7,10 +7,8 @@ namespace Reproducto_Musica
     {
         private readonly ISampleProvider source;
 
-        // new signature: provide float[] samples directly
         public Action<float[]> SamplesAvailable;
 
-        // optional FFT processor is handled inside VisualizerControl now
 
         public SampleAggregator(ISampleProvider source)
         {
@@ -24,7 +22,6 @@ namespace Reproducto_Musica
             int read = source.Read(buffer, offset, count);
             if (read > 0)
             {
-                // copy into a new array of length 'read' to provide contiguous samples
                 float[] copy = new float[read];
                 Array.Copy(buffer, offset, copy, 0, read);
                 SamplesAvailable?.Invoke(copy);

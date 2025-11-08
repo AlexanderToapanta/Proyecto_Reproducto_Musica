@@ -119,7 +119,7 @@ namespace Reproducto_Musica
             }
             else if (Mode == VisualMode.Onda)
             {
-                using (Pen pen = new Pen(Color.Cyan))
+                using (Pen pen = new Pen(BarColor))
                 {
                     int mid = h / 2;
                     int points = w;
@@ -152,7 +152,7 @@ namespace Reproducto_Musica
                 int barWidth = Math.Max(2, w / bars);
                 int spacing = 1;
 
-                using (Brush barBrush = new SolidBrush(Color.OrangeRed))
+                using (Brush barBrush = new SolidBrush(BarColor))
                 {
                     for (int i = 0; i < bars; i++)
                     {

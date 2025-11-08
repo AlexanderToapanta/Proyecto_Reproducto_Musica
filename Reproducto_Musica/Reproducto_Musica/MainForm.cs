@@ -20,11 +20,18 @@ namespace Reproducto_Musica
         private bool isUserScrolling = false;
         private ContextMenuStrip contextMenuStrip;
         private VisualizerControl visualizer;
+        
+        // NUEVO: BeatDetector para Alison
+        private BeatDetector beatDetector;
 
         public MainForm()
         {
             audioPlayer = new AudioPlayer();
             playlistManager = new PlaylistManager();
+            
+            // NUEVO: Inicializar BeatDetector
+            beatDetector = new BeatDetector();
+            
             InitializeComponent();
 
             // Configurar menú contextual para eliminar canciones
@@ -38,7 +45,15 @@ namespace Reproducto_Musica
             visualizer.Height = 220;
             this.Controls.Add(visualizer);
 
-            audioPlayer.SamplesAvailable += visualizer.AddSamples;
+            // MODIFICADO: Conectar samples tanto al visualizer como al beat detector
+            audioPlayer.SamplesAvailable += samples => {
+                visualizer.AddSamples(samples);
+                beatDetector.ProcessSamples(samples); // NUEVO
+            };
+
+            // NUEVO: Eventos del BeatDetector
+            beatDetector.OnBeatDetected += BeatDetector_OnBeatDetected;
+            beatDetector.BpmChanged += BeatDetector_BpmChanged;
 
             // initialize controls
             cmb_VisualMode.SelectedIndex = 0;
@@ -56,6 +71,46 @@ namespace Reproducto_Musica
                     default: visualizer.Mode = VisualMode.Barras; break;
                 }
             };
+        }
+
+        // NUEVO: Manejar detección de beats
+        private void BeatDetector_OnBeatDetected(object sender, BeatEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => BeatDetector_OnBeatDetected(sender, e)));
+                return;
+            }
+
+            // EJEMPLO: Efectos visuales en beat (Alison puede personalizar esto)
+            if (e.IsStrongBeat)
+            {
+                // Beat fuerte - colores más intensos
+                visualizer.BarColor = Color.Red;
+                visualizer.PeakColor = Color.Yellow;
+            }
+            else
+            {
+                // Beat normal - colores normales
+                visualizer.BarColor = Color.LimeGreen;
+                visualizer.PeakColor = Color.Cyan;
+            }
+
+            // Invalidar visualizer para mostrar cambios
+            visualizer.Invalidate();
+        }
+
+        // NUEVO: Manejar cambios de BPM
+        private void BeatDetector_BpmChanged(object sender, int bpm)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => BeatDetector_BpmChanged(sender, bpm)));
+                return;
+            }
+
+            // EJEMPLO: Mostrar BPM en algún label (Alison puede agregar un label para esto)
+            // lbl_BPM.Text = $"♪ {bpm} BPM";
         }
 
         private void SetupContextMenu()
