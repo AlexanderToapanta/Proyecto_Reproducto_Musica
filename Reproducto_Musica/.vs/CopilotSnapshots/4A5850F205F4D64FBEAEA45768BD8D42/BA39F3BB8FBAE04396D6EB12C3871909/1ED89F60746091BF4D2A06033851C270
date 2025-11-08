@@ -248,6 +248,7 @@ namespace Reproducto_Musica
             hscrb_Progreso.LargeChange = 1;
             hscrb_Progreso.Minimum = 0;
             
+            // Asignar el menú contextual al ListView después de que se haya inicializado
             if (lstw_Canciones != null)
             {
                 lstw_Canciones.ContextMenuStrip = contextMenuStrip;
@@ -327,6 +328,7 @@ namespace Reproducto_Musica
                         lstw_Canciones.Items.Add(item);
                     }
 
+                    // Si antes no había canciones, seleccionar la primera añadida
                     if (wasEmpty && lstw_Canciones.Items.Count > 0)
                     {
                         lstw_Canciones.Items[0].Selected = true;
@@ -354,18 +356,22 @@ namespace Reproducto_Musica
 
         private void btn_Parar_Click(object sender, EventArgs e)
         {
+            // SOLO detener reproducción sin eliminar canciones
             audioPlayer.Stop();
             isPlaying = false;
             btn_Play.Text = "▶";
             lbl_Tiempo.Text = "00:00 / 00:00";
             hscrb_Progreso.Value = 0;
-
+            
+            // NO deseleccionar la canción - mantener la selección actual
+            // para que al presionar Play continúe con la misma canción
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
             string currentSong = playlistManager.GetCurrentSong();
             
+            // Si hay una canción actual en el PlaylistManager, usarla
             if (currentSong != null)
             {
                 // Asegurar que la canción actual esté seleccionada en la vista
@@ -397,6 +403,7 @@ namespace Reproducto_Musica
                 return;
             }
 
+            // Reproducir o pausar
             if (!isPlaying)
             {
                 audioPlayer.Play(currentSong);
@@ -451,19 +458,21 @@ namespace Reproducto_Musica
             audioPlayer.Volume = vol;
         }
 
+        // NUEVO: Evento para el botón de mute
         private void btn_Mute_Click(object sender, EventArgs e)
         {
             audioPlayer.ToggleMute();
             
+            // Actualizar el icono del botón basado en el estado de mute
             if (audioPlayer.IsMuted)
             {
-                btn_Mute.Text = "🔇"; 
-                btn_Mute.BackColor = Color.LightCoral; 
+                btn_Mute.Text = "🔇"; // Icono de mute
+                btn_Mute.BackColor = Color.LightCoral; // Color de fondo para indicar que está muteado
             }
             else
             {
-                btn_Mute.Text = "🔊"; 
-                btn_Mute.BackColor = SystemColors.Control; 
+                btn_Mute.Text = "🔊"; // Icono de volumen
+                btn_Mute.BackColor = SystemColors.Control; // Color normal
             }
         }
 

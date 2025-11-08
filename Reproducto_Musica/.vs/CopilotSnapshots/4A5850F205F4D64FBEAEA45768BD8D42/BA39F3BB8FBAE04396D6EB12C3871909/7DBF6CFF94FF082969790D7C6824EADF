@@ -248,6 +248,7 @@ namespace Reproducto_Musica
             hscrb_Progreso.LargeChange = 1;
             hscrb_Progreso.Minimum = 0;
             
+            // Asignar el menú contextual al ListView después de que se haya inicializado
             if (lstw_Canciones != null)
             {
                 lstw_Canciones.ContextMenuStrip = contextMenuStrip;
@@ -327,6 +328,7 @@ namespace Reproducto_Musica
                         lstw_Canciones.Items.Add(item);
                     }
 
+                    // Si antes no había canciones, seleccionar la primera añadida
                     if (wasEmpty && lstw_Canciones.Items.Count > 0)
                     {
                         lstw_Canciones.Items[0].Selected = true;
@@ -354,18 +356,22 @@ namespace Reproducto_Musica
 
         private void btn_Parar_Click(object sender, EventArgs e)
         {
+            // SOLO detener reproducción sin eliminar canciones
             audioPlayer.Stop();
             isPlaying = false;
             btn_Play.Text = "▶";
             lbl_Tiempo.Text = "00:00 / 00:00";
             hscrb_Progreso.Value = 0;
-
+            
+            // NO deseleccionar la canción - mantener la selección actual
+            // para que al presionar Play continúe con la misma canción
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
             string currentSong = playlistManager.GetCurrentSong();
             
+            // Si hay una canción actual en el PlaylistManager, usarla
             if (currentSong != null)
             {
                 // Asegurar que la canción actual esté seleccionada en la vista
@@ -397,6 +403,7 @@ namespace Reproducto_Musica
                 return;
             }
 
+            // Reproducir o pausar
             if (!isPlaying)
             {
                 audioPlayer.Play(currentSong);
@@ -449,22 +456,6 @@ namespace Reproducto_Musica
         {
             float vol = trk_Volumen.Value / 100f;
             audioPlayer.Volume = vol;
-        }
-
-        private void btn_Mute_Click(object sender, EventArgs e)
-        {
-            audioPlayer.ToggleMute();
-            
-            if (audioPlayer.IsMuted)
-            {
-                btn_Mute.Text = "🔇"; 
-                btn_Mute.BackColor = Color.LightCoral; 
-            }
-            else
-            {
-                btn_Mute.Text = "🔊"; 
-                btn_Mute.BackColor = SystemColors.Control; 
-            }
         }
 
         private void cmb_VisualMode_SelectedIndexChanged(object sender, EventArgs e)

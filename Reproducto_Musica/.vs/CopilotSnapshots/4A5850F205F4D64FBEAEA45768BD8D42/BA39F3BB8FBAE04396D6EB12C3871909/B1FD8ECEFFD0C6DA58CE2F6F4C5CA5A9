@@ -42,7 +42,6 @@
             this.hscrb_Progreso = new System.Windows.Forms.HScrollBar();
             this.trk_Volumen = new System.Windows.Forms.TrackBar();
             this.cmb_VisualMode = new System.Windows.Forms.ComboBox();
-            this.btn_Mute = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trk_Volumen)).BeginInit();
             this.SuspendLayout();
             // 
@@ -192,24 +191,11 @@
             this.cmb_VisualMode.TabIndex = 13;
             this.cmb_VisualMode.SelectedIndexChanged += new System.EventHandler(this.cmb_VisualMode_SelectedIndexChanged);
             // 
-            // btn_Mute
-            // 
-            this.btn_Mute.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Mute.Location = new System.Drawing.Point(91, 301);
-            this.btn_Mute.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_Mute.Name = "btn_Mute";
-            this.btn_Mute.Size = new System.Drawing.Size(50, 36);
-            this.btn_Mute.TabIndex = 14;
-            this.btn_Mute.Text = "🔊";
-            this.btn_Mute.UseVisualStyleBackColor = true;
-            this.btn_Mute.Click += new System.EventHandler(this.btn_Mute_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 554);
-            this.Controls.Add(this.btn_Mute);
             this.Controls.Add(this.cmb_VisualMode);
             this.Controls.Add(this.trk_Volumen);
             this.Controls.Add(this.hscrb_Progreso);
@@ -247,7 +233,6 @@
         private System.Windows.Forms.HScrollBar hscrb_Progreso;
         private System.Windows.Forms.TrackBar trk_Volumen;
         private System.Windows.Forms.ComboBox cmb_VisualMode;
-        private System.Windows.Forms.Button btn_Mute;
     }
 }
 

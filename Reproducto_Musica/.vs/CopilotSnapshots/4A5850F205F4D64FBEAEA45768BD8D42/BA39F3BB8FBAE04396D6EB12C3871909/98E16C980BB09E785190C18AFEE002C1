@@ -19,8 +19,6 @@ namespace Reproducto_Musica
         public event Action<float[]> SamplesAvailable;
 
         private float volume = 1.0f;
-        private bool isMuted = false;
-        private float volumeBeforeMute = 1.0f;
 
         public float Volume
         {
@@ -28,37 +26,12 @@ namespace Reproducto_Musica
             set
             {
                 volume = value;
-                if (!isMuted && volumeProvider != null)
+                if (volumeProvider != null)
                 {
                     volumeProvider.Volume = volume;
                 }
             }
         }
-
-        public bool IsMuted
-        {
-            get { return isMuted; }
-            set
-            {
-                if (isMuted != value)
-                {
-                    isMuted = value;
-                    if (volumeProvider != null)
-                    {
-                        if (isMuted)
-                        {
-                            volumeBeforeMute = volume;
-                            volumeProvider.Volume = 0f;
-                        }
-                        else
-                        {
-                            volumeProvider.Volume = volume;
-                        }
-                    }
-                }
-            }
-        }
-
         public void Play(string filePath)
         {
             if (waveOut != null && waveOut.PlaybackState == PlaybackState.Paused)
@@ -79,16 +52,6 @@ namespace Reproducto_Musica
             };
 
             volumeProvider = new VolumeSampleProvider(sampleAggregator);
-            
-            // Aplicar el estado de mute actual
-            if (isMuted)
-            {
-                volumeProvider.Volume = 0f;
-            }
-            else
-            {
-                volumeProvider.Volume = volume;
-            }
 
             var waveProvider = new SampleToWaveProvider16(volumeProvider);
 
@@ -140,11 +103,6 @@ namespace Reproducto_Musica
 
                 Console.WriteLine("Error al detener el audio: " + ex.Message);
             }
-        }
-
-        public void ToggleMute()
-        {
-            IsMuted = !IsMuted;
         }
 
         public double GetCurrentTime()
