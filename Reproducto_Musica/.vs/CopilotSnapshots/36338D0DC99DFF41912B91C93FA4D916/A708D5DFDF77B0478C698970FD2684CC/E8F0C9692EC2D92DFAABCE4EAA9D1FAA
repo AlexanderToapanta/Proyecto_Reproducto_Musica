@@ -1,0 +1,354 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Reproducto_Musica
+{
+    public partial class MainForm : Form
+    {
+        private Timer tmr_Reproductor;
+        private AudioPlayer audioPlayer;
+        private PlaylistManager playlistManager;
+        private bool isPlaying = false;
+        private bool isUserScrolling = false;
+        private ContextMenuStrip contextMenuStrip;
+        private VisualizerControl visualizer;
+        private BeatDetector beatDetector;
+
+        public MainForm()
+        {
+            audioPlayer = new AudioPlayer();
+            playlistManager = new PlaylistManager();
+            beatDetector = new BeatDetector();
+
+            InitializeComponent();
+            SetupContextMenu();
+
+            // Un solo visualizer
+            visualizer = new VisualizerControl
+            {
+                Location = new Point(115, 46),
+                Size = new Size(616, 240), // altura mayor para espectro
+                BackColor = Color.Black,
+                Dock = DockStyle.Top
+            };
+            Controls.Add(visualizer);
+
+            // Suscripción única de samples
+            audioPlayer.SamplesAvailable += samples =>
+            {
+                visualizer.AddSamples(samples);
+                beatDetector.ProcessSamples(samples);
+            };
+
+            beatDetector.OnBeatDetected += BeatDetector_OnBeatDetected;
+            beatDetector.BpmChanged += BeatDetector_BpmChanged;
+
+            // Seleccionar "Barras" por defecto
+            int barrasIndex = -1;
+            for (int i = 0; i < cmb_VisualMode.Items.Count; i++)
+            {
+                if (string.Equals(Convert.ToString(cmb_VisualMode.Items[i]), "Barras", StringComparison.OrdinalIgnoreCase))
+                {
+                    barrasIndex = i;
+                    break;
+                }
+            }
+            if (barrasIndex >= 0) cmb_VisualMode.SelectedIndex = barrasIndex; else if (cmb_VisualMode.Items.Count > 0) cmb_VisualMode.SelectedIndex = 0;
+
+            trk_Volumen.Value = 100;
+            audioPlayer.Volume = 1f;
+
+            cmb_VisualMode.SelectedIndexChanged += (s, e) =>
+            {
+                if (cmb_VisualMode.SelectedItem == null) return;
+                string m = cmb_VisualMode.SelectedItem.ToString();
+                switch (m)
+                {
+                    case "Barras": visualizer.Mode = VisualMode.Barras; break;
+                    case "Onda": visualizer.Mode = VisualMode.Onda; break;
+                    case "Espectro": visualizer.Mode = VisualMode.Espectro; break;
+                    default: visualizer.Mode = VisualMode.Barras; break;
+                }
+                visualizer.Invalidate();
+            };
+        }
+
+        private void BeatDetector_OnBeatDetected(object sender, BeatEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => BeatDetector_OnBeatDetected(sender, e)));
+                return;
+            }
+            if (e.IsStrongBeat)
+            {
+                visualizer.BarColor = Color.Red;
+                visualizer.PeakColor = Color.Yellow;
+            }
+            else
+            {
+                visualizer.BarColor = Color.LimeGreen;
+                visualizer.PeakColor = Color.Cyan;
+            }
+            visualizer.Invalidate();
+        }
+
+        private void BeatDetector_BpmChanged(object sender, int bpm)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => BeatDetector_BpmChanged(sender, bpm)));
+                return;
+            }
+        }
+
+        private void SetupContextMenu()
+        {
+            contextMenuStrip = new ContextMenuStrip();
+            var eliminarCancion = new ToolStripMenuItem("Eliminar canción");
+            eliminarCancion.Click += EliminarCancionSeleccionada_Click;
+            contextMenuStrip.Items.Add(eliminarCancion);
+            contextMenuStrip.Items.Add(new ToolStripSeparator());
+            var limpiarPlaylist = new ToolStripMenuItem("Limpiar toda la playlist");
+            limpiarPlaylist.Click += LimpiarPlaylist_Click;
+            contextMenuStrip.Items.Add(limpiarPlaylist);
+            contextMenuStrip.Items.Add(new ToolStripSeparator());
+        }
+
+        private void EliminarCancionSeleccionada_Click(object sender, EventArgs e)
+        {
+            if (lstw_Canciones.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Selecciona una canción para eliminar.", "No hay selección", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            int selectedIndex = lstw_Canciones.SelectedItems[0].Index;
+            string nombreCancion = lstw_Canciones.SelectedItems[0].Text;
+            var resultado = MessageBox.Show($"¿Estás seguro de que quieres eliminar '{nombreCancion}' de la playlist?\n\nEsta acción no se puede deshacer.", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resultado != DialogResult.Yes) return;
+
+            if (selectedIndex == playlistManager.CurrentIndex && isPlaying)
+            {
+                audioPlayer.Stop();
+                isPlaying = false;
+                btn_Play.Text = "▶";
+                lbl_Nom_Cancion.Text = "";
+                lbl_Tiempo.Text = "00:00 / 00:00";
+                hscrb_Progreso.Value = 0;
+            }
+            lstw_Canciones.Items.RemoveAt(selectedIndex);
+            if (lstw_Canciones.LargeImageList != null && selectedIndex < lstw_Canciones.LargeImageList.Images.Count)
+                lstw_Canciones.LargeImageList.Images.RemoveAt(selectedIndex);
+            playlistManager.RemoveSongAt(selectedIndex);
+            MessageBox.Show($"Canción '{nombreCancion}' eliminada de la playlist.", "Eliminación exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void LimpiarPlaylist_Click(object sender, EventArgs e)
+        {
+            if (lstw_Canciones.Items.Count == 0)
+            {
+                MessageBox.Show("No hay canciones en la playlist para eliminar.", "Playlist vacía", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            var resultado = MessageBox.Show($"¿Estás seguro de que quieres eliminar todas las {lstw_Canciones.Items.Count} canciones de la playlist?\n\nEsta acción no se puede deshacer y eliminará toda la música cargada.", "Limpiar playlist completa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (resultado != DialogResult.Yes) return;
+
+            if (isPlaying)
+            {
+                audioPlayer.Stop();
+                isPlaying = false;
+                btn_Play.Text = "▶";
+                lbl_Nom_Cancion.Text = "";
+                lbl_Tiempo.Text = "00:00 / 00:00";
+                hscrb_Progreso.Value = 0;
+            }
+            int cantidadEliminada = lstw_Canciones.Items.Count;
+            lstw_Canciones.Items.Clear();
+            if (lstw_Canciones.LargeImageList != null) lstw_Canciones.LargeImageList.Images.Clear();
+            playlistManager.ClearPlaylist();
+            MessageBox.Show($"Playlist limpiada correctamente.\n{cantidadEliminada} canciones eliminadas.", "Playlist limpiada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            tm_Tiempo_Musica.Interval = 500;
+            tm_Tiempo_Musica.Tick += tm_Tiempo_Musica_Tick;
+            tm_Tiempo_Musica.Start();
+            hscrb_Progreso.LargeChange = 1;
+            hscrb_Progreso.Minimum = 0;
+            lstw_Canciones.ContextMenuStrip = contextMenuStrip;
+        }
+
+        private void tm_Tiempo_Musica_Tick(object sender, EventArgs e)
+        {
+            if (!isPlaying || isUserScrolling) return;
+            double current = audioPlayer.GetCurrentTime();
+            double total = audioPlayer.GetTotalTime();
+            if (total > 0)
+            {
+                hscrb_Progreso.Maximum = (int)total;
+                hscrb_Progreso.Value = (int)Math.Min(current, total);
+            }
+            TimeSpan currentTime = TimeSpan.FromSeconds(current);
+            TimeSpan totalTime = TimeSpan.FromSeconds(total);
+            lbl_Tiempo.Text = $"{currentTime:mm\\:ss} / {totalTime:mm\\:ss}";
+        }
+
+        private void hscrb_Progreso_Scroll(object sender, ScrollEventArgs e)
+        {
+            isUserScrolling = true;
+            lbl_Tiempo.Text = $"{TimeSpan.FromSeconds(hscrb_Progreso.Value):mm\\:ss}";
+            audioPlayer.SetPosition(hscrb_Progreso.Value);
+            isUserScrolling = false;
+        }
+
+        private void btn_CargarMusica_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog { Filter = "Archivos de audio|*.mp3;*.wav", Multiselect = true })
+            {
+                if (ofd.ShowDialog() != DialogResult.OK) return;
+
+                if (lstw_Canciones.LargeImageList == null)
+                {
+                    lstw_Canciones.LargeImageList = new ImageList { ImageSize = new Size(64, 64) };
+                }
+                bool wasEmpty = lstw_Canciones.Items.Count == 0;
+                foreach (var file in ofd.FileNames)
+                {
+                    if (playlistManager.GetPlaylist().Any(p => string.Equals(Path.GetFullPath(p), Path.GetFullPath(file), StringComparison.OrdinalIgnoreCase)))
+                        continue;
+                    playlistManager.AddSong(file);
+                    Image cover = playlistManager.GetCoverImage(file);
+                    if (cover == null)
+                    {
+                        string defaultCoverPath = Path.Combine(Application.StartupPath, "Resources", "cover.png");
+                        cover = File.Exists(defaultCoverPath) ? Image.FromFile(defaultCoverPath) : new Bitmap(64, 64);
+                    }
+                    lstw_Canciones.LargeImageList.Images.Add(cover);
+                    var item = new ListViewItem(Path.GetFileName(file), lstw_Canciones.LargeImageList.Images.Count - 1) { Tag = file };
+                    lstw_Canciones.Items.Add(item);
+                }
+                if (wasEmpty && lstw_Canciones.Items.Count > 0)
+                {
+                    lstw_Canciones.Items[0].Selected = true;
+                    lstw_Canciones.Items[0].Focused = true;
+                    playlistManager.SetCurrentIndex(0);
+                }
+            }
+        }
+
+        private void btn_Anterior_Click(object sender, EventArgs e)
+        {
+            string prev = playlistManager.PreviousSong();
+            if (prev == null) return;
+            lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
+            lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
+            audioPlayer.Play(prev);
+            lbl_Nom_Cancion.Text = Path.GetFileName(prev);
+            btn_Play.Text = "⏸️ Pausar";
+            isPlaying = true;
+        }
+
+        private void btn_Parar_Click(object sender, EventArgs e)
+        {
+            audioPlayer.Stop();
+            isPlaying = false;
+            btn_Play.Text = "▶";
+            lbl_Tiempo.Text = "00:00 / 00:00";
+            hscrb_Progreso.Value = 0;
+        }
+
+        private void btn_Play_Click(object sender, EventArgs e)
+        {
+            string currentSong = playlistManager.GetCurrentSong();
+            if (currentSong == null)
+            {
+                if (lstw_Canciones.SelectedItems.Count > 0)
+                {
+                    int sel = lstw_Canciones.SelectedIndices[0];
+                    currentSong = playlistManager.GetPlaylist()[sel];
+                    playlistManager.SetCurrentIndex(sel);
+                }
+                else if (lstw_Canciones.Items.Count > 0)
+                {
+                    currentSong = playlistManager.GetPlaylist()[0];
+                    playlistManager.SetCurrentIndex(0);
+                    lstw_Canciones.Items[0].Selected = true;
+                }
+                else
+                {
+                    MessageBox.Show("No hay canciones en la playlist.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            if (!isPlaying)
+            {
+                audioPlayer.Play(currentSong);
+                lbl_Nom_Cancion.Text = Path.GetFileName(currentSong);
+                btn_Play.Text = "⏸️ Pausar";
+                isPlaying = true;
+            }
+            else
+            {
+                audioPlayer.Pause();
+                btn_Play.Text = "▶️ Reanudar";
+                isPlaying = false;
+            }
+        }
+
+        private void btn_Siguiente_Click(object sender, EventArgs e)
+        {
+            string next = playlistManager.NextSong();
+            if (next == null) return;
+            lstw_Canciones.Items[playlistManager.CurrentIndex].Selected = true;
+            lstw_Canciones.EnsureVisible(playlistManager.CurrentIndex);
+            audioPlayer.Play(next);
+            lbl_Nom_Cancion.Text = Path.GetFileName(next);
+            btn_Play.Text = "⏸️ Pausar";
+            isPlaying = true;
+        }
+
+        private void lstw_Canciones_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstw_Canciones.SelectedItems.Count == 0) return;
+            int index = lstw_Canciones.SelectedItems[0].Index;
+            playlistManager.SetCurrentIndex(index);
+            string selectedSong = playlistManager.GetCurrentSong();
+            if (selectedSong == null) return;
+            audioPlayer.Play(selectedSong);
+            lbl_Nom_Cancion.Text = Path.GetFileName(selectedSong);
+            btn_Play.Text = "⏸️ Pausar";
+            isPlaying = true;
+        }
+
+        private void trk_Volumen_Scroll(object sender, EventArgs e)
+        {
+            audioPlayer.Volume = trk_Volumen.Value / 100f;
+        }
+
+        private void btn_Mute_Click(object sender, EventArgs e)
+        {
+            audioPlayer.ToggleMute();
+            if (audioPlayer.IsMuted)
+            {
+                btn_Mute.Text = "🔇";
+                btn_Mute.BackColor = Color.LightCoral;
+            }
+            else
+            {
+                btn_Mute.Text = "🔊";
+                btn_Mute.BackColor = SystemColors.Control;
+            }
+        }
+
+        private void cmb_VisualMode_SelectedIndexChanged(object sender, EventArgs e) { }
+    }
+}

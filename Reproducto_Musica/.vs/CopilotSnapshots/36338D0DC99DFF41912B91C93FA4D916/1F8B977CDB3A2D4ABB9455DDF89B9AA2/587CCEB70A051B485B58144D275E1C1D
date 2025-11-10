@@ -1,0 +1,178 @@
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+using NAudio.Wave;
+
+namespace Reproducto_Musica
+{
+    public enum VisualMode
+    {
+        Barras,
+        Onda,
+        Espectro
+    }
+
+    public class VisualizerControl : Control
+    {
+        private readonly object bufferLock = new object();
+        private float[] sampleBuffer = new float[0];
+
+        // FFT
+        private FftProcessor fftProcessor;
+        private float[] spectrum = new float[0];
+        private readonly object spectrumLock = new object();
+
+        public VisualMode Mode { get; set; } = VisualMode.Barras;
+        public Color BarColor { get; set; } = Color.LimeGreen;
+        public Color PeakColor { get; set; } = Color.Yellow;
+
+        // Ajusta el nivel del espectro para pantallas pequeñas
+        [DefaultValue(1.5f)]
+        public float SpectrumGain { get; set; } = 1.5f;
+
+        public VisualizerControl()
+        {
+            DoubleBuffered = true;
+            SetStyle(ControlStyles.ResizeRedraw, true);
+
+            // default FFT
+            fftProcessor = new FftProcessor(1024);
+            fftProcessor.MagnitudesAvailable += OnFftMagnitudes;
+        }
+
+        public void AddSamples(float[] samples)
+        {
+            lock (bufferLock)
+            {
+                // append and keep recent
+                int keep = Math.Min(sampleBuffer.Length, Width * 4);
+                int newSize = Math.Min(keep + samples.Length, Width * 8);
+                float[] newBuf = new float[newSize];
+                if (keep > 0)
+                    Array.Copy(sampleBuffer, sampleBuffer.Length - keep, newBuf, 0, keep);
+                int toCopy = Math.Min(samples.Length, newSize - keep);
+                Array.Copy(samples, 0, newBuf, keep, toCopy);
+                sampleBuffer = newBuf;
+            }
+
+            // feed FFT
+            fftProcessor.Add(samples);
+
+            if (IsHandleCreated)
+                BeginInvoke((Action)(() => Invalidate()));
+        }
+
+        private void OnFftMagnitudes(float[] mags)
+        {
+            lock (spectrumLock)
+            {
+                if (spectrum == null || spectrum.Length != mags.Length)
+                    spectrum = new float[mags.Length];
+                for (int i = 0; i < mags.Length; i++)
+                {
+                    float v = (float)(Math.Log10(1 + mags[i]) / 2.0);
+                    spectrum[i] = spectrum[i] * 0.6f + v * 0.4f;
+                }
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            var g = e.Graphics;
+            g.Clear(BackColor);
+
+            float[] bufferCopy;
+            lock (bufferLock)
+            {
+                bufferCopy = new float[sampleBuffer.Length];
+                Array.Copy(sampleBuffer, bufferCopy, bufferCopy.Length);
+            }
+
+            int w = Width;
+            int h = Height;
+
+            if (Mode == VisualMode.Barras)
+            {
+                if (bufferCopy.Length == 0) return;
+                int barWidth = Math.Max(4, w / 60);
+                int spacing = Math.Max(2, barWidth / 2);
+                int bars = Math.Max(1, w / (barWidth + spacing));
+                int samplesPerBar = Math.Max(1, bufferCopy.Length / bars);
+
+                using (Brush barBrush = new SolidBrush(BarColor))
+                using (Brush peakBrush = new SolidBrush(PeakColor))
+                {
+                    for (int i = 0; i < bars; i++)
+                    {
+                        int start = i * samplesPerBar;
+                        int len = Math.Min(samplesPerBar, bufferCopy.Length - start);
+                        if (len <= 0) break;
+                        float max = 0f;
+                        for (int j = 0; j < len; j++) { float a = Math.Abs(bufferCopy[start + j]); if (a > max) max = a; }
+                        int barHeight = (int)(Math.Min(1f, max) * (h - 6));
+                        int x = i * (barWidth + spacing);
+                        int y = (h - barHeight) / 2;
+                        g.FillRectangle(barBrush, new Rectangle(x, y, barWidth, barHeight));
+                        int capHeight = Math.Max(2, Math.Min(10, (int)(barHeight * 0.08)));
+                        g.FillRectangle(peakBrush, new Rectangle(x, y - capHeight - 1, barWidth, capHeight));
+                    }
+                }
+            }
+            else if (Mode == VisualMode.Onda)
+            {
+                if (bufferCopy.Length == 0) return;
+                using (Pen pen = new Pen(BarColor))
+                {
+                    int mid = h / 2;
+                    int points = Math.Max(2, w);
+                    float samplesPerPoint = Math.Max(1f, (float)bufferCopy.Length / points);
+                    Point[] pts = new Point[points];
+                    for (int x = 0; x < points; x++)
+                    {
+                        int start = (int)(x * samplesPerPoint);
+                        int len = Math.Min((int)samplesPerPoint, bufferCopy.Length - start);
+                        float sum = 0f;
+                        for (int j = 0; j < len; j++) sum += bufferCopy[start + j];
+                        float avg = sum / Math.Max(1, len);
+                        int y = mid - (int)(avg * mid);
+                        pts[x] = new Point(x, y);
+                    }
+                    if (pts.Length >= 2)
+                        g.DrawLines(pen, pts);
+                }
+            }
+            else if (Mode == VisualMode.Espectro)
+            {
+                float[] specCopy;
+                lock (spectrumLock)
+                {
+                    if (spectrum == null || spectrum.Length == 0) return;
+                    specCopy = new float[spectrum.Length];
+                    Array.Copy(spectrum, specCopy, specCopy.Length);
+                }
+
+                int minBarWidth = 6;
+                int spacing = 2;
+                int bars = Math.Min(specCopy.Length, Math.Max(8, w / (minBarWidth + spacing)));
+                if (bars <= 0) return;
+                int barWidth = Math.Max(minBarWidth, (w - Math.Max(0, (bars - 1) * spacing)) / bars);
+
+                using (Brush barBrush = new SolidBrush(BarColor))
+                {
+                    for (int i = 0; i < bars; i++)
+                    {
+                        int idx = (int)((i / (float)bars) * specCopy.Length);
+                        float v = specCopy[idx] * SpectrumGain;
+                        if (v > 1f) v = 1f;
+                        int barHeight = (int)(v * (h - 4));
+                        int x = i * (barWidth + spacing);
+                        int y = h - barHeight;
+                        g.FillRectangle(barBrush, new Rectangle(x, y, barWidth, barHeight));
+                    }
+                }
+            }
+        }
+    }
+}

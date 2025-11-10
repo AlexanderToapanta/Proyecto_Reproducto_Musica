@@ -66,7 +66,7 @@ namespace Reproducto_Musica
             {
                 if (cmb_VisualMode.SelectedItem == null) return;
                 string m = cmb_VisualMode.SelectedItem.ToString();
-                if (m == "Cambie el efecto") return;
+                if (m == "Seleccione un efecto") return;
                 switch (m)
                 {
                    

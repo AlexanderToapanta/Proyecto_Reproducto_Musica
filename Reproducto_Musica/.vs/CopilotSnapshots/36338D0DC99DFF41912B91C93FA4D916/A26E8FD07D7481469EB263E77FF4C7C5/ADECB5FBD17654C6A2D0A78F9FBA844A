@@ -60,16 +60,12 @@ namespace Reproducto_Musica
             trk_Volumen.Value = 100;
             audioPlayer.Volume = 1f;
 
-
-
             cmb_VisualMode.SelectedIndexChanged += (s, e) =>
             {
                 if (cmb_VisualMode.SelectedItem == null) return;
                 string m = cmb_VisualMode.SelectedItem.ToString();
-                if (m == "Cambie el efecto") return;
                 switch (m)
                 {
-                   
                     case "Barras": visualizer.Mode = VisualMode.Barras; break;
                     case "Onda": visualizer.Mode = VisualMode.Onda; break;
                     default: visualizer.Mode = VisualMode.Barras; break;

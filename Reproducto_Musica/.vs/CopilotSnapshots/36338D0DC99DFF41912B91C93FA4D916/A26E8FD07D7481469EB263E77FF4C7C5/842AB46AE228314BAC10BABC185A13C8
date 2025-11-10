@@ -56,22 +56,33 @@ namespace Reproducto_Musica
             beatDetector.BpmChanged += BeatDetector_BpmChanged;
 
             // initialize controls
-            cmb_VisualMode.SelectedIndex = 0;
+-            cmb_VisualMode.SelectedIndex = 0;
++            // Seleccionar 'Barras' por defecto si existe la opción
++            if (cmb_VisualMode.Items.Count > 0)
++            {
++                int idx = -1;
++                for (int i = 0; i < cmb_VisualMode.Items.Count; i++)
++                {
++                    if (string.Equals(Convert.ToString(cmb_VisualMode.Items[i]), "Barras", StringComparison.OrdinalIgnoreCase))
++                    {
++                        idx = i;
++                        break;
++                    }
++                }
++                cmb_VisualMode.SelectedIndex = idx >= 0 ? idx : 0;
++            }
             trk_Volumen.Value = 100;
             audioPlayer.Volume = 1f;
-
-
 
             cmb_VisualMode.SelectedIndexChanged += (s, e) =>
             {
                 if (cmb_VisualMode.SelectedItem == null) return;
                 string m = cmb_VisualMode.SelectedItem.ToString();
-                if (m == "Cambie el efecto") return;
                 switch (m)
                 {
-                   
                     case "Barras": visualizer.Mode = VisualMode.Barras; break;
                     case "Onda": visualizer.Mode = VisualMode.Onda; break;
++                    case "Espectro": visualizer.Mode = VisualMode.Espectro; break;
                     default: visualizer.Mode = VisualMode.Barras; break;
                 }
             };
