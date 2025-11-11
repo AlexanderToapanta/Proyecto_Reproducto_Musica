@@ -18,24 +18,14 @@ namespace Reproducto_Musica
         private PlaylistManager playlistManager;
         private bool isPlaying = false;
         private bool isUserScrolling = false;
-        private ContextMenuStrip contextMenuStrip;
         private VisualizerControl visualizer;
-        
-        // NUEVO: BeatDetector para Alison
-        private BeatDetector beatDetector;
 
         public MainForm()
         {
             audioPlayer = new AudioPlayer();
             playlistManager = new PlaylistManager();
             
-            // NUEVO: Inicializar BeatDetector
-            beatDetector = new BeatDetector();
-            
             InitializeComponent();
-
-            // Configurar menú contextual para eliminar canciones
-            SetupContextMenu();
 
             visualizer = new VisualizerControl();
             visualizer.Location = new Point(115, 46);
@@ -45,22 +35,14 @@ namespace Reproducto_Musica
             visualizer.Height = 220;
             this.Controls.Add(visualizer);
 
-            // MODIFICADO: Conectar samples tanto al visualizer como al beat detector
             audioPlayer.SamplesAvailable += samples => {
                 visualizer.AddSamples(samples);
-                beatDetector.ProcessSamples(samples); // NUEVO
             };
-
-            // NUEVO: Eventos del BeatDetector
-            beatDetector.OnBeatDetected += BeatDetector_OnBeatDetected;
-            beatDetector.BpmChanged += BeatDetector_BpmChanged;
 
             // initialize controls
             cmb_VisualMode.SelectedIndex = 0;
             trk_Volumen.Value = 100;
             audioPlayer.Volume = 1f;
-
-
 
             cmb_VisualMode.SelectedIndexChanged += (s, e) =>
             {
@@ -69,74 +51,11 @@ namespace Reproducto_Musica
                 if (m == "Cambie el efecto") return;
                 switch (m)
                 {
-                   
                     case "Barras": visualizer.Mode = VisualMode.Barras; break;
                     case "Onda": visualizer.Mode = VisualMode.Onda; break;
                     default: visualizer.Mode = VisualMode.Barras; break;
                 }
             };
-        }
-
-        // NUEVO: Manejar detección de beats
-        private void BeatDetector_OnBeatDetected(object sender, BeatEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action(() => BeatDetector_OnBeatDetected(sender, e)));
-                return;
-            }
-
-            // EJEMPLO: Efectos visuales en beat (Alison puede personalizar esto)
-            if (e.IsStrongBeat)
-            {
-                // Beat fuerte - colores más intensos
-                visualizer.BarColor = Color.Red;
-                visualizer.PeakColor = Color.Yellow;
-            }
-            else
-            {
-                // Beat normal - colores normales
-                visualizer.BarColor = Color.LimeGreen;
-                visualizer.PeakColor = Color.Cyan;
-            }
-
-            // Invalidar visualizer para mostrar cambios
-            visualizer.Invalidate();
-        }
-
-        // NUEVO: Manejar cambios de BPM
-        private void BeatDetector_BpmChanged(object sender, int bpm)
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action(() => BeatDetector_BpmChanged(sender, bpm)));
-                return;
-            }
-
-            // EJEMPLO: Mostrar BPM en algún label (Alison puede agregar un label para esto)
-            // lbl_BPM.Text = $"♪ {bpm} BPM";
-        }
-
-        private void SetupContextMenu()
-        {
-            contextMenuStrip = new ContextMenuStrip();
-            
-            // Opción para eliminar canción seleccionada
-            ToolStripMenuItem eliminarCancion = new ToolStripMenuItem("Eliminar canción");
-            eliminarCancion.Click += EliminarCancionSeleccionada_Click;
-            contextMenuStrip.Items.Add(eliminarCancion);
-            
-            // Separador
-            contextMenuStrip.Items.Add(new ToolStripSeparator());
-            
-            // Opción para limpiar toda la playlist
-            ToolStripMenuItem limpiarPlaylist = new ToolStripMenuItem("Limpiar toda la playlist");
-            limpiarPlaylist.Click += LimpiarPlaylist_Click;
-            contextMenuStrip.Items.Add(limpiarPlaylist);
-            
-            // Separador
-            contextMenuStrip.Items.Add(new ToolStripSeparator());
-            
         }
 
         private void EliminarCancionSeleccionada_Click(object sender, EventArgs e)
@@ -251,11 +170,6 @@ namespace Reproducto_Musica
             tm_Tiempo_Musica.Start();
             hscrb_Progreso.LargeChange = 1;
             hscrb_Progreso.Minimum = 0;
-            
-            if (lstw_Canciones != null)
-            {
-                lstw_Canciones.ContextMenuStrip = contextMenuStrip;
-            }
         }
 
         private void tm_Tiempo_Musica_Tick(object sender, EventArgs e)
@@ -363,7 +277,6 @@ namespace Reproducto_Musica
             btn_Play.Text = "▶";
             lbl_Tiempo.Text = "00:00 / 00:00";
             hscrb_Progreso.Value = 0;
-
         }
 
         private void btn_Play_Click(object sender, EventArgs e)

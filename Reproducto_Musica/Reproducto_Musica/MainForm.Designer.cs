@@ -35,6 +35,10 @@
             this.btn_Anterior = new System.Windows.Forms.Button();
             this.btn_Siguiente = new System.Windows.Forms.Button();
             this.lstw_Canciones = new System.Windows.Forms.ListView();
+            this.contextMenuStrip_Canciones = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.eliminarCanciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.limpiarPlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_Tiempo = new System.Windows.Forms.Label();
             this.lbl_Nom_Cancion = new System.Windows.Forms.Label();
             this.txt_texto = new System.Windows.Forms.TextBox();
@@ -43,6 +47,7 @@
             this.trk_Volumen = new System.Windows.Forms.TrackBar();
             this.cmb_VisualMode = new System.Windows.Forms.ComboBox();
             this.btn_Mute = new System.Windows.Forms.Button();
+            this.contextMenuStrip_Canciones.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trk_Volumen)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,7 +56,7 @@
             this.btn_CargarMusica.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_CargarMusica.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_CargarMusica.Location = new System.Drawing.Point(22, 211);
-            this.btn_CargarMusica.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_CargarMusica.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_CargarMusica.Name = "btn_CargarMusica";
             this.btn_CargarMusica.Size = new System.Drawing.Size(61, 33);
             this.btn_CargarMusica.TabIndex = 0;
@@ -63,7 +68,7 @@
             // 
             this.btn_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Play.Location = new System.Drawing.Point(613, 481);
-            this.btn_Play.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Play.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Play.Name = "btn_Play";
             this.btn_Play.Size = new System.Drawing.Size(100, 36);
             this.btn_Play.TabIndex = 1;
@@ -75,7 +80,7 @@
             // 
             this.btn_Parar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Parar.Location = new System.Drawing.Point(489, 481);
-            this.btn_Parar.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Parar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Parar.Name = "btn_Parar";
             this.btn_Parar.Size = new System.Drawing.Size(100, 36);
             this.btn_Parar.TabIndex = 2;
@@ -87,7 +92,7 @@
             // 
             this.btn_Anterior.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Anterior.Location = new System.Drawing.Point(343, 481);
-            this.btn_Anterior.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Anterior.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Anterior.Name = "btn_Anterior";
             this.btn_Anterior.Size = new System.Drawing.Size(100, 36);
             this.btn_Anterior.TabIndex = 3;
@@ -99,7 +104,7 @@
             // 
             this.btn_Siguiente.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Siguiente.Location = new System.Drawing.Point(771, 481);
-            this.btn_Siguiente.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Siguiente.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Siguiente.Name = "btn_Siguiente";
             this.btn_Siguiente.Size = new System.Drawing.Size(100, 36);
             this.btn_Siguiente.TabIndex = 4;
@@ -109,19 +114,48 @@
             // 
             // lstw_Canciones
             // 
+            this.lstw_Canciones.ContextMenuStrip = this.contextMenuStrip_Canciones;
             this.lstw_Canciones.HideSelection = false;
             this.lstw_Canciones.Location = new System.Drawing.Point(153, 283);
-            this.lstw_Canciones.Margin = new System.Windows.Forms.Padding(4);
+            this.lstw_Canciones.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstw_Canciones.Name = "lstw_Canciones";
             this.lstw_Canciones.Size = new System.Drawing.Size(820, 142);
             this.lstw_Canciones.TabIndex = 5;
             this.lstw_Canciones.UseCompatibleStateImageBehavior = false;
             this.lstw_Canciones.SelectedIndexChanged += new System.EventHandler(this.lstw_Canciones_SelectedIndexChanged);
             // 
+            // contextMenuStrip_Canciones
+            // 
+            this.contextMenuStrip_Canciones.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eliminarCanciónToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.limpiarPlaylistToolStripMenuItem});
+            this.contextMenuStrip_Canciones.Name = "contextMenuStrip_Canciones";
+            this.contextMenuStrip_Canciones.Size = new System.Drawing.Size(155, 54);
+            // 
+            // eliminarCanciónToolStripMenuItem
+            // 
+            this.eliminarCanciónToolStripMenuItem.Name = "eliminarCanciónToolStripMenuItem";
+            this.eliminarCanciónToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.eliminarCanciónToolStripMenuItem.Text = "Eliminar canción";
+            this.eliminarCanciónToolStripMenuItem.Click += new System.EventHandler(this.EliminarCancionSeleccionada_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(151, 6);
+            // 
+            // limpiarPlaylistToolStripMenuItem
+            // 
+            this.limpiarPlaylistToolStripMenuItem.Name = "limpiarPlaylistToolStripMenuItem";
+            this.limpiarPlaylistToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.limpiarPlaylistToolStripMenuItem.Text = "Limpiar playlist";
+            this.limpiarPlaylistToolStripMenuItem.Click += new System.EventHandler(this.LimpiarPlaylist_Click);
+            // 
             // lbl_Tiempo
             // 
             this.lbl_Tiempo.AutoSize = true;
-            this.lbl_Tiempo.Location = new System.Drawing.Point(44, 518);
+            this.lbl_Tiempo.Location = new System.Drawing.Point(69, 518);
             this.lbl_Tiempo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Tiempo.Name = "lbl_Tiempo";
             this.lbl_Tiempo.Size = new System.Drawing.Size(54, 16);
@@ -131,7 +165,7 @@
             // lbl_Nom_Cancion
             // 
             this.lbl_Nom_Cancion.AutoSize = true;
-            this.lbl_Nom_Cancion.Location = new System.Drawing.Point(42, 481);
+            this.lbl_Nom_Cancion.Location = new System.Drawing.Point(69, 481);
             this.lbl_Nom_Cancion.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Nom_Cancion.Name = "lbl_Nom_Cancion";
             this.lbl_Nom_Cancion.Size = new System.Drawing.Size(56, 16);
@@ -144,7 +178,7 @@
             this.txt_texto.Font = new System.Drawing.Font("Microsoft Tai Le", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_texto.ForeColor = System.Drawing.Color.Crimson;
             this.txt_texto.Location = new System.Drawing.Point(106, 211);
-            this.txt_texto.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_texto.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txt_texto.Multiline = true;
             this.txt_texto.Name = "txt_texto";
             this.txt_texto.ReadOnly = true;
@@ -179,17 +213,16 @@
             // 
             // cmb_VisualMode
             // 
-            this.cmb_VisualMode.BackColor = System.Drawing.Color.White;
             this.cmb_VisualMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_VisualMode.FormattingEnabled = true;
             this.cmb_VisualMode.Items.AddRange(new object[] {
-            "Cambi el efecto",
+            "",
             "Barras",
             "Onda"});
             this.cmb_VisualMode.Location = new System.Drawing.Point(13, 13);
             this.cmb_VisualMode.Margin = new System.Windows.Forms.Padding(4);
             this.cmb_VisualMode.Name = "cmb_VisualMode";
-            this.cmb_VisualMode.Size = new System.Drawing.Size(185, 24);
+            this.cmb_VisualMode.Size = new System.Drawing.Size(128, 24);
             this.cmb_VisualMode.TabIndex = 13;
             this.cmb_VisualMode.SelectedIndexChanged += new System.EventHandler(this.cmb_VisualMode_SelectedIndexChanged);
             // 
@@ -223,10 +256,11 @@
             this.Controls.Add(this.btn_Parar);
             this.Controls.Add(this.btn_Play);
             this.Controls.Add(this.btn_CargarMusica);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "Reproductor de música";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.contextMenuStrip_Canciones.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trk_Volumen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -249,6 +283,10 @@
         private System.Windows.Forms.TrackBar trk_Volumen;
         private System.Windows.Forms.ComboBox cmb_VisualMode;
         private System.Windows.Forms.Button btn_Mute;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_Canciones;
+        private System.Windows.Forms.ToolStripMenuItem eliminarCanciónToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem limpiarPlaylistToolStripMenuItem;
     }
 }
 
